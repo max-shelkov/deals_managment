@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#00C5E0</color>
+    <color name="colorPrimaryDark">#008CE6</color>
+    <color name="colorAccent">#FCC30A</color>
+    <color name="colorYellow">#FFFF00</color>
+    
+    
+    <color name="color2GisGreyDark">#414042</color>
+    <color name="color2GisGreyLight">#4D4D4F</color>
+
+    <color name="color2GisSaladDarkest">#6FBF05</color>
+    <color name="color2GisSaladDark">#94D419</color>
+    <color name="color2GisSaladMedium">#9DE400</color>
+    <color name="color2GisSaladLight">#D9FCBB</color>
+
+    <color name="color2GisBlueDark">#008CE6</color>
+    <color name="color2GisBlueMedium">#00C5E0</color>
+    <color name="color2GisBlueLight">#CFFAFC</color>
+
+    <color name="color2GisGreenDark">#05A60F</color>
+    <color name="color2GisGreenMedium">#36C600</color>
+    <color name="color2GisGreenLight">#C5FCC0</color>
+
+    <color name="color2GisYellowDark">#FCC30A</color>
+    <color name="color2GisYellowMedium">#FEDD0E</color>
+    <color name="color2GisYellowLight">#FFFABE</color>
+
+</resources>
