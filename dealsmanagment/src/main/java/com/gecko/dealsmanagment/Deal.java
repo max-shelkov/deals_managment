@@ -36,6 +36,7 @@ public class Deal {
     private short mFinishMonth;
     private short mDuration;
     private boolean mCleared;
+    private boolean newVariable;
 
 /*
     public Deal(String owner, String name, String contractor, String status,
@@ -82,6 +83,7 @@ public class Deal {
         mRealVolume = mPriceVolume - (mPriceVolume*discount/100);
         mAmount = mRealVolume + duration;
         mCleared = false;
+
     }
 
     public UUID getId() {
