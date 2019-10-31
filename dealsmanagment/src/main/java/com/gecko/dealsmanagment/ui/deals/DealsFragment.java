@@ -3,6 +3,9 @@ package com.gecko.dealsmanagment.ui.deals;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -29,20 +32,24 @@ public class DealsFragment extends Fragment {
 
     private DealsViewModel mDealsViewModel;
 
-    private TextView mTextView;
     private Button mButtonChangeMpp, mButtonLoadDealsFromXls;
     private Button mButtonSerialize, mButtonDeserialize;
     private RecyclerView mDealsRecyclerView;
     private DealsAdapter mAdapter;
 
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         mDealsViewModel = ViewModelProviders.of(this).get(DealsViewModel.class);
         View root = inflater.inflate(R.layout.fragment_deals, container, false);
 
-        mTextView = root.findViewById(R.id.text_deals);
+//        mTextView = root.findViewById(R.id.text_deals);
         mButtonSerialize = root.findViewById(R.id.button_serialize);
         mButtonDeserialize = root.findViewById(R.id.button_deserialize);
         mButtonChangeMpp = root.findViewById(R.id.button_change_num);
@@ -50,21 +57,6 @@ public class DealsFragment extends Fragment {
         mDealsRecyclerView = root.findViewById(R.id.recycler_view_deals);
         mDealsRecyclerView.setHasFixedSize(true);
         mDealsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-        mDealsViewModel.getText().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-
-                mTextView.setText(s);
-            }
-        });
-
-        mDealsViewModel.getNum().observe(this, new Observer<Integer>() {
-            @Override
-            public void onChanged(Integer integer) {
-                mTextView.setText(integer.toString());
-            }
-        });
 
         mDealsViewModel.getDealsKeeper().observe(this, new Observer<DealsKeeper>() {
             @Override
@@ -103,11 +95,15 @@ public class DealsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "load from xls clicked");
-                mDealsViewModel.loadDeals();
+                loadDealsFromXls();
             }
         });
 
         return root;
+    }
+
+    public void loadDealsFromXls(){
+        mDealsViewModel.loadDeals();
     }
 
     public void printDealsToLog(List<Deal> deals){
@@ -166,7 +162,6 @@ public class DealsFragment extends Fragment {
 
     private class DealsAdapter extends RecyclerView.Adapter<DealsViewHolder>{
 
-
         private List<Deal> mDealList;
 
         public DealsAdapter(List<Deal> dealList) {
@@ -195,6 +190,17 @@ public class DealsFragment extends Fragment {
             mDealList = dealList;
         }
 
+    }
 
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.options_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        loadDealsFromXls();
+        return true;
     }
 }

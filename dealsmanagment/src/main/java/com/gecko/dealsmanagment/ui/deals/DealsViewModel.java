@@ -15,37 +15,13 @@ public class DealsViewModel extends ViewModel {
 
     private static final String TAG = "myLog";
 
-    private MutableLiveData<String> mText;
-    private MutableLiveData<Integer> mNum;
     private MutableLiveData<DealsKeeper> mDealsKeeper;
 
-
-
     public DealsViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is deals fragment");
-
-        mNum = new MutableLiveData<>();
-        mNum.setValue(0);
-
         mDealsKeeper = new MutableLiveData<>();
-
         if (mDealsKeeper.getValue() == null){
             mDealsKeeper.setValue(new DealsKeeper());
         }
-
-    }
-
-    public LiveData<String> getText() {
-        return mText;
-    }
-
-    public void changeText(){
-        mText.setValue(mText.getValue()+mNum.getValue());
-    }
-
-    public MutableLiveData<Integer> getNum() {
-        return mNum;
     }
 
     public void changeMPP(){

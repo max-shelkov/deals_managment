@@ -5,4 +5,5 @@
     <string name="title_notifications">Notifications</string>
     <string name="change_num">change num</string>
     <string name="change_text">change text</string>
+    <string name="load_xls">load from xls file</string>
 </resources>

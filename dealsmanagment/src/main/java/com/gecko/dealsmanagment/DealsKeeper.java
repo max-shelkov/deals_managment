@@ -28,7 +28,7 @@ public class DealsKeeper extends AppCompatActivity {
     private List<Deal> mDeals;
 
     public DealsKeeper() {
-        Log.d(TAG, "before start dealsLoader");
+        Log.d(TAG, "DealsLoader constructor");
         mDeals = new ArrayList<>();
     }
 
@@ -39,21 +39,6 @@ public class DealsKeeper extends AppCompatActivity {
     public void setDeals(List<Deal> deals) {
         mDeals = deals;
     }
-
-    /*
-    private List<Deal> dealsGenerator(int number){
-        ArrayList<Deal> deals = new ArrayList<>();
-        for (int i = 0; i < number; i++) {
-            Deal d = new Deal(i%2 == 0 ? "Manager1" : "Manager2", "VeryImportantClie" + i, "Ivanov", Deal.DEAL_STATUS_CURRENT,
-                    4470, 10, (short)11, (short)6);
-            d.setToPay(d.getPriceVolume()*4);
-            deals.add(d);
-        }
-        return deals;
-    }
-*/
-
-
 
     public void printDealsToLog(){
         for (Deal d : mDeals) {
@@ -76,8 +61,8 @@ public class DealsKeeper extends AppCompatActivity {
             Log.d(TAG, "after open file");
             Sheet sheet = wb.getSheet("текущие");
             Log.d(TAG, "after got sheet");
-//            for (int i = 1; i < sheet.getPhysicalNumberOfRows(); i++) {
-            for (int i = 1; i < 10; i++) {
+            for (int i = 1; i < sheet.getPhysicalNumberOfRows(); i++) {
+//            for (int i = 1; i < 10; i++) {
                 Row row = sheet.getRow(i);
                 Cell cellFirmName = row.getCell(1);
                 Cell cellOwner = row.getCell(11);
@@ -96,9 +81,6 @@ public class DealsKeeper extends AppCompatActivity {
                         ,10, (short)11, (short)6);
                 d.setToPay((float)cellToPay.getNumericCellValue());
                 deals.add(d);
-
-
-
             }
             Log.d(TAG, "after cycle");
         } catch (IOException e) {
@@ -111,7 +93,6 @@ public class DealsKeeper extends AppCompatActivity {
 
     public void serializeDeals(){
         Log.d(TAG, "start Serializing deals array");
-
         try {
             FileOutputStream fos = MainActivity.getAppContext().openFileOutput(SAVE_DEALS_FILE_NAME, Context.MODE_PRIVATE);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
@@ -127,7 +108,6 @@ public class DealsKeeper extends AppCompatActivity {
     }
 
     public List<Deal> deserializeDeals(){
-
         try {
             FileInputStream fis = MainActivity.getAppContext().openFileInput(SAVE_DEALS_FILE_NAME);
             ObjectInputStream oin = new ObjectInputStream(fis);
@@ -138,7 +118,6 @@ public class DealsKeeper extends AppCompatActivity {
         }
         printDealsToLog();
         Log.d(TAG, "Deserializing deals array finished");
-
         return mDeals;
     }
 
