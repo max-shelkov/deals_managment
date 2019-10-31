@@ -29,7 +29,8 @@ public class DealsFragment extends Fragment {
     private DealsViewModel mDealsViewModel;
 
     private TextView mTextView;
-    private Button mButtonChangeNum, mButtonChangeText;
+    private Button mButtonChangeMpp, mButtonLoadDealsFromXls;
+    private Button mButtonSerialize, mButtonDeserialize;
     private RecyclerView mDealsRecyclerView;
     private DealsAdapter mAdapter;
 
@@ -41,8 +42,10 @@ public class DealsFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_deals, container, false);
 
         mTextView = root.findViewById(R.id.text_deals);
-        mButtonChangeNum = root.findViewById(R.id.button_change_num);
-        mButtonChangeText = root.findViewById(R.id.button_change_text);
+        mButtonSerialize = root.findViewById(R.id.button_serialize);
+        mButtonDeserialize = root.findViewById(R.id.button_deserialize);
+        mButtonChangeMpp = root.findViewById(R.id.button_change_num);
+        mButtonLoadDealsFromXls = root.findViewById(R.id.button_change_text);
         mDealsRecyclerView = root.findViewById(R.id.recycler_view_deals);
         mDealsRecyclerView.setHasFixedSize(true);
         mDealsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -72,7 +75,23 @@ public class DealsFragment extends Fragment {
             }
         });
 
-        mButtonChangeNum.setOnClickListener(new View.OnClickListener() {
+        mButtonSerialize.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "Serialize clicked");
+                mDealsViewModel.serializeDealsKeeper();
+            }
+        });
+
+        mButtonDeserialize.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "Deserialize clicked");
+                mDealsViewModel.deserializeDealsKeeper();
+            }
+        });
+
+        mButtonChangeMpp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                mDealsViewModel.incNum();
@@ -81,7 +100,7 @@ public class DealsFragment extends Fragment {
             }
         });
 
-        mButtonChangeText.setOnClickListener(new View.OnClickListener() {
+        mButtonLoadDealsFromXls.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                mDealsViewModel.changeText();
@@ -93,7 +112,15 @@ public class DealsFragment extends Fragment {
         return root;
     }
 
+    public void printDealsToLog(List<Deal> deals){
+        for (Deal d : deals) {
+            Log.d(TAG, "owner = " + d.getOwner());
+        }
+    }
+
     private void updateRecyclerView(List<Deal> deals) {
+        Log.d(TAG, "updateRecyclerView started");
+        printDealsToLog(deals);
         if (mAdapter == null) {
             mAdapter = new DealsAdapter(deals);
             mDealsRecyclerView.setAdapter(mAdapter);

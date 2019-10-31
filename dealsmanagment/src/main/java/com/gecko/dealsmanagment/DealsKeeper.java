@@ -12,28 +12,35 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 public class DealsKeeper extends AppCompatActivity {
 
-    public static final String TAG = "myLog";
+    private static final String TAG = "myLog";
+    private static final String SAVE_DEALS_FILE_NAME = "deals.save";
 
     private List<Deal> mDeals;
 
     public DealsKeeper() {
-//        mDeals = dealsGenerator(20);
         Log.d(TAG, "before start dealsLoader");
-//        mDeals = dealsLoader("201910.xls");
         mDeals = new ArrayList<>();
     }
 
     public List<Deal> getDeals(){
-
         return mDeals;
     }
 
+    public void setDeals(List<Deal> deals) {
+        mDeals = deals;
+    }
+
+    /*
     private List<Deal> dealsGenerator(int number){
         ArrayList<Deal> deals = new ArrayList<>();
         for (int i = 0; i < number; i++) {
@@ -44,12 +51,13 @@ public class DealsKeeper extends AppCompatActivity {
         }
         return deals;
     }
+*/
 
 
 
     public void printDealsToLog(){
         for (Deal d : mDeals) {
-            Log.d(TAG, d.toString());
+            Log.d(TAG, "owner = " + d.getOwner());
         }
     }
 
@@ -68,7 +76,8 @@ public class DealsKeeper extends AppCompatActivity {
             Log.d(TAG, "after open file");
             Sheet sheet = wb.getSheet("текущие");
             Log.d(TAG, "after got sheet");
-            for (int i = 1; i < sheet.getPhysicalNumberOfRows(); i++) {
+//            for (int i = 1; i < sheet.getPhysicalNumberOfRows(); i++) {
+            for (int i = 1; i < 10; i++) {
                 Row row = sheet.getRow(i);
                 Cell cellFirmName = row.getCell(1);
                 Cell cellOwner = row.getCell(11);
@@ -97,6 +106,39 @@ public class DealsKeeper extends AppCompatActivity {
             e.printStackTrace();
         }
         mDeals = deals;
+        return mDeals;
+    }
+
+    public void serializeDeals(){
+        Log.d(TAG, "start Serializing deals array");
+
+        try {
+            FileOutputStream fos = MainActivity.getAppContext().openFileOutput(SAVE_DEALS_FILE_NAME, Context.MODE_PRIVATE);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(mDeals);
+            oos.flush();
+            oos.close();
+        } catch (IOException e) {
+            Log.e(TAG, "error when serializing" + e);
+            e.printStackTrace();
+        }
+        printDealsToLog();
+        Log.d(TAG, "Serialing deals array finished");
+    }
+
+    public List<Deal> deserializeDeals(){
+
+        try {
+            FileInputStream fis = MainActivity.getAppContext().openFileInput(SAVE_DEALS_FILE_NAME);
+            ObjectInputStream oin = new ObjectInputStream(fis);
+            mDeals = (List<Deal>) oin.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            Log.e(TAG, "error when deserializing" + e);
+            e.printStackTrace();
+        }
+        printDealsToLog();
+        Log.d(TAG, "Deserializing deals array finished");
+
         return mDeals;
     }
 

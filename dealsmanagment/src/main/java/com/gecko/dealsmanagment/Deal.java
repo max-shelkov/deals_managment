@@ -2,12 +2,12 @@ package com.gecko.dealsmanagment;
 
 import androidx.annotation.NonNull;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.UUID;
 
-public class Deal {
+public class Deal implements Serializable {
 
     public static final String DEAL_STATUS_NEW = "new_deal";
     public static final String DEAL_STATUS_CURRENT = "current_deal";

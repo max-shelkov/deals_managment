@@ -19,6 +19,7 @@ public class DealsViewModel extends ViewModel {
     private MutableLiveData<String> mText;
     private MutableLiveData<Integer> mNum;
     private MutableLiveData<List<Deal>> mDeals;
+//    private MutableLiveData<DealsKeeper> mDealsKeeperMutableLiveData;
 
     private DealsKeeper mDealsKeeper;
 
@@ -30,6 +31,10 @@ public class DealsViewModel extends ViewModel {
         mNum.setValue(0);
 
         mDeals = new MutableLiveData<>();
+
+//        mDealsKeeperMutableLiveData = new MutableLiveData<>();
+
+
         if (mDealsKeeper == null){
             mDealsKeeper = new DealsKeeper();
         }
@@ -57,11 +62,13 @@ public class DealsViewModel extends ViewModel {
     public void changeMPP(){
         List<Deal> deals = mDeals.getValue();
         deals.get(0).setOwner("Manager3");
+        mDealsKeeper.setDeals(deals);
         mDeals.setValue(deals);
     }
 
     public void loadDeals(){
         List<Deal> deals = mDealsKeeper.dealsLoader("201910.xls");
+        mDealsKeeper.setDeals(deals);
         mDeals.setValue(deals);
     }
 
@@ -79,5 +86,21 @@ public class DealsViewModel extends ViewModel {
         }
     }
 
+    public void serializeDealsKeeper(){
+        Log.d(TAG, " ViewModel Serialize action");
+        mDealsKeeper.serializeDeals();
+    }
+
+    public void deserializeDealsKeeper(){
+        Log.d(TAG, "ViewModel Deserialize action");
+        List<Deal> deals = mDealsKeeper.deserializeDeals();
+        mDealsKeeper.setDeals(deals);
+//        List<Deal> deals = mDealsKeeper.getDeals();
+        if (deals == null){
+            Log.e(TAG, "deals == null");
+        } else {
+            mDeals.setValue(deals);
+        }
+    }
 
 }

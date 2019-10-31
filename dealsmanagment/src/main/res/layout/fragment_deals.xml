@@ -20,16 +20,29 @@
         android:textSize="20sp" />
 
     <Button
+        android:id="@+id/button_serialize"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="srialize" />
+
+    <Button
+        android:id="@+id/button_deserialize"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="deserialize" />
+
+
+    <Button
         android:id="@+id/button_change_num"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/change_num" />
+        android:text="change_name" />
 
     <Button
         android:id="@+id/button_change_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/change_text" />
+        android:text="read from file" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_deals"
