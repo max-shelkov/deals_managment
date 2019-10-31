@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.gecko.dealsmanagment.Deal;
+import com.gecko.dealsmanagment.DealsKeeper;
 import com.gecko.dealsmanagment.R;
 
 import java.util.List;
@@ -65,13 +66,12 @@ public class DealsFragment extends Fragment {
             }
         });
 
-        mDealsViewModel.getDeals().observe(this, new Observer<List<Deal>>() {
+        mDealsViewModel.getDealsKeeper().observe(this, new Observer<DealsKeeper>() {
             @Override
-            public void onChanged(List<Deal> deals) {
-                Log.d(TAG, "got deals observe notification");
-
-                Log.d(TAG, "mDeals.size = " + deals.size());
-                updateRecyclerView(deals);
+            public void onChanged(DealsKeeper dealsKeeper) {
+                Log.d(TAG, "got dealsKeeer observe notification");
+                Log.d(TAG, "mDeals.size = " + dealsKeeper.getDeals().size());
+                updateRecyclerView(dealsKeeper.getDeals());
             }
         });
 
@@ -94,21 +94,19 @@ public class DealsFragment extends Fragment {
         mButtonChangeMpp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                mDealsViewModel.incNum();
+                Log.d(TAG, "change mpp clicked");
                 mDealsViewModel.changeMPP();
-
             }
         });
 
         mButtonLoadDealsFromXls.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                mDealsViewModel.changeText();
+                Log.d(TAG, "load from xls clicked");
                 mDealsViewModel.loadDeals();
             }
         });
 
-//        mDealsViewModel.loadDeals();
         return root;
     }
 
@@ -152,10 +150,6 @@ public class DealsFragment extends Fragment {
 
         public void bind(Deal d){
             mDeal = d;
-/*
-            String s = mDeal.getName();
-            s = s.substring(5);
-*/
             mFirmName.setText(mDeal.getName()+" ["+mDeal.getContractor()+"]");
             mOwnerName.setText(mDeal.getOwner());
             mPriceVolume.setText("Объем: "+mDeal.getPriceVolume());
