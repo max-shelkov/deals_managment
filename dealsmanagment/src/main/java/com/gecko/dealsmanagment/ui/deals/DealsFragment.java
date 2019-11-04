@@ -1,5 +1,8 @@
 package com.gecko.dealsmanagment.ui.deals;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,6 +32,7 @@ import java.util.List;
 public class DealsFragment extends Fragment {
 
     public static final String TAG = "myLog";
+    private static final int READ_REQUEST_CODE = 42;
 
     private DealsViewModel mDealsViewModel;
 
@@ -102,8 +106,12 @@ public class DealsFragment extends Fragment {
         return root;
     }
 
-    public void loadDealsFromXls(){
+    private void loadDealsFromXls(){
         mDealsViewModel.loadDeals();
+    }
+
+    private void loadDealsFromXls(Uri uri){
+        mDealsViewModel.loadDeals(uri);
     }
 
     public void printDealsToLog(List<Deal> deals){
@@ -114,7 +122,7 @@ public class DealsFragment extends Fragment {
 
     private void updateRecyclerView(List<Deal> deals) {
         Log.d(TAG, "updateRecyclerView started");
-        printDealsToLog(deals);
+//        printDealsToLog(deals);
         if (mAdapter == null) {
             mAdapter = new DealsAdapter(deals);
             mDealsRecyclerView.setAdapter(mAdapter);
@@ -123,6 +131,12 @@ public class DealsFragment extends Fragment {
             mAdapter.setDealList(deals);
             mAdapter.notifyDataSetChanged();
         }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mDealsViewModel.serializeDealsKeeper();
     }
 
     private class DealsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -200,7 +214,47 @@ public class DealsFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        loadDealsFromXls();
+        switch (item.getItemId()){
+            case R.id.load_xls_menu_item:
+                loadDealsFromXls();
+                break;
+            case R.id.choose_file_menu_item:
+                Toast.makeText(getActivity(), "choose file", Toast.LENGTH_LONG).show();
+                performFileSearch();
+//                startAdditionalActivity();
+                break;
+        }
+
         return true;
+    }
+
+
+
+    private void performFileSearch(){
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.setType("*/*");
+
+/*
+        List<ResolveInfo> activities;
+        PackageManager pm = getActivity().getPackageManager();
+        activities = pm.queryIntentActivities(intent, PackageManager.MATCH_ALL);
+        Log.d(TAG, "number of activities = " + activities.size());
+*/
+
+        startActivityForResult(intent, READ_REQUEST_CODE);
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == READ_REQUEST_CODE && resultCode == Activity.RESULT_OK){
+            Uri uri = null;
+            if (data != null) {
+                uri = data.getData();
+                Log.i(TAG, "Uri: " + uri.toString());
+//                loadDealsFromXls(uri);
+            }
+        }
     }
 }

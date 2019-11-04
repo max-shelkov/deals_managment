@@ -1,6 +1,9 @@
 package com.gecko.dealsmanagment;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -20,9 +23,14 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "myLog";
+    private static final int READ_REQUEST_CODE = 42;
+
 
     private static Context sContext;
 
@@ -41,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navView, navController);
 
         MainActivity.sContext = getApplicationContext();
+
     }
 
     public static Context getAppContext(){

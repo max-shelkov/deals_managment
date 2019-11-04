@@ -1,5 +1,6 @@
 package com.gecko.dealsmanagment.ui.deals;
 
+import android.net.Uri;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
@@ -35,6 +36,12 @@ public class DealsViewModel extends ViewModel {
         mDealsKeeper.setValue(mDealsKeeper.getValue());
     }
 
+    public void loadDeals(Uri uri) {
+        List<Deal> deals = mDealsKeeper.getValue().dealsLoader(uri);
+        mDealsKeeper.getValue().setDeals(deals);
+        mDealsKeeper.setValue(mDealsKeeper.getValue());
+    }
+
     public MutableLiveData<DealsKeeper> getDealsKeeper(){
         return mDealsKeeper;
     }
@@ -54,5 +61,6 @@ public class DealsViewModel extends ViewModel {
             mDealsKeeper.setValue(mDealsKeeper.getValue());
         }
     }
+
 
 }

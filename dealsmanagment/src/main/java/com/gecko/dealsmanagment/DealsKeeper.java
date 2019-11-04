@@ -2,6 +2,7 @@ package com.gecko.dealsmanagment;
 
 import android.content.Context;
 import android.content.res.AssetManager;
+import android.net.Uri;
 import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,6 +16,7 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
@@ -30,6 +32,7 @@ public class DealsKeeper extends AppCompatActivity {
     public DealsKeeper() {
         Log.d(TAG, "DealsLoader constructor");
         mDeals = new ArrayList<>();
+        deserializeDeals();
     }
 
     public List<Deal> getDeals(){
@@ -46,8 +49,23 @@ public class DealsKeeper extends AppCompatActivity {
         }
     }
 
+    public List<Deal> dealsLoader(Uri uri) {
+        Log.d(TAG, "deals loader from Uri started");
+        ArrayList<Deal> deals = new ArrayList<>();
+/*
+        try {
+            Workbook wb = WorkbookFactory.create(new InputStreamReader(openFileInput(uri.toString())));
+            Log.d(TAG, "workbook from external XLS file created succesfully");
+        } catch (IOException e) {
+            Log.e(TAG, "error when open filetream from xls file " + e);
+            e.printStackTrace();
+        }
+*/
+        return null;
+    }
+
     public List<Deal> dealsLoader(String fileName){
-        Log.d(TAG, "deals loader started");
+        Log.d(TAG, "deals loader from xls started");
         ArrayList<Deal> deals = new ArrayList<>();
         try {
             AssetManager am = MainActivity.getAppContext().getAssets();
@@ -56,9 +74,7 @@ public class DealsKeeper extends AppCompatActivity {
             } else {
                 Log.d(TAG, "assets found");
             }
-            Log.d(TAG, "before open file");
             Workbook wb = WorkbookFactory.create(am.open(fileName));
-            Log.d(TAG, "after open file");
             Sheet sheet = wb.getSheet("текущие");
             Log.d(TAG, "after got sheet");
             for (int i = 1; i < sheet.getPhysicalNumberOfRows(); i++) {
@@ -91,6 +107,7 @@ public class DealsKeeper extends AppCompatActivity {
         return mDeals;
     }
 
+
     public void serializeDeals(){
         Log.d(TAG, "start Serializing deals array");
         try {
@@ -120,6 +137,7 @@ public class DealsKeeper extends AppCompatActivity {
         Log.d(TAG, "Deserializing deals array finished");
         return mDeals;
     }
+
 
 
 }
