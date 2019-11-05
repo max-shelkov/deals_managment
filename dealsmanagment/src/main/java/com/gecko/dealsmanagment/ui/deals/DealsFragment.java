@@ -27,6 +27,7 @@ import com.gecko.dealsmanagment.Deal;
 import com.gecko.dealsmanagment.DealsKeeper;
 import com.gecko.dealsmanagment.R;
 
+import java.io.File;
 import java.util.List;
 
 public class DealsFragment extends Fragment {
@@ -252,8 +253,8 @@ public class DealsFragment extends Fragment {
             Uri uri = null;
             if (data != null) {
                 uri = data.getData();
-                Log.i(TAG, "Uri: " + uri.toString());
-//                loadDealsFromXls(uri);
+                Log.i(TAG, "Uri: " + uri.getPath());
+                loadDealsFromXls(uri);
             }
         }
     }

@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.UUID;
 
 public class Deal implements Serializable {
@@ -18,22 +19,22 @@ public class Deal implements Serializable {
     public static final String DEAL_STATUS_PROLONGATION = "prolongation_deal";
 
 
-    private UUID mId;
-    private String mOwner;
-    private String mName;
-    private String mContractor;
-    private String mStatus;
-    private float mAmount;
-    private float mPriceVolume;
-    private float mRealVolume;
-    private float mDiscount;
+    private UUID mId;           //+
+    private String mOwner;      //+
+    private String mName;       //
+    private String mContractor; //
+    private String mStatus;     //
+    private float mAmount;      //
+    private float mPriceVolume; //
+    private float mRealVolume;  //
+    private float mDiscount;    //
     private float mBalance;
     private float mToPay;
     private ArrayList<LocalDate> mPayPlanDate;
     private float mPaid;
     private ArrayList<LocalDate> mPayRealDate;
-    private short mStartMonth;
-    private short mFinishMonth;
+    private Calendar mStartMonth;
+    private Calendar mFinishMonth;
     private short mDuration;
     private boolean mCleared;
     private boolean newVariable;
@@ -63,14 +64,14 @@ public class Deal implements Serializable {
 */
 
     public Deal(String owner, String name, String contractor, String status,
-                float priceVolume, float discount, short startMonth, short duration) {
+                float priceVolume, float realVolume, Calendar startMonth, short duration) {
         mId = UUID.randomUUID();
         mOwner = owner;
         mName = name;
         mContractor = contractor;
         mStatus = status;
         mPriceVolume = priceVolume;
-        mDiscount = discount;
+        mRealVolume = realVolume;
         mStartMonth = startMonth;
         mDuration = duration;
 
@@ -79,9 +80,10 @@ public class Deal implements Serializable {
         mPayPlanDate = new ArrayList<>();
         mPaid = 0;
         mPayRealDate = new ArrayList<>();
-        mFinishMonth = (short) (mStartMonth + duration);
-        mRealVolume = mPriceVolume - (mPriceVolume*discount/100);
-        mAmount = mRealVolume + duration;
+        mFinishMonth = mStartMonth;
+        mFinishMonth.add(Calendar.MONTH, duration);
+        mDiscount = 100 - 100*mRealVolume/mPriceVolume;
+        mAmount = mRealVolume * duration;
         mCleared = false;
 
     }

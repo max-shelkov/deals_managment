@@ -18,32 +18,43 @@
         android:layout_marginEnd="8dp"
         android:textAlignment="center"
         android:textSize="20sp" />
-
-    <Button
-        android:id="@+id/button_serialize"
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="serialize" />
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/button_serialize"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="serialize"
+            android:layout_weight="1"
+            android:singleLine="true"/>
 
-    <Button
-        android:id="@+id/button_deserialize"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="deserialize" />
+        <Button
+            android:id="@+id/button_deserialize"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="deserialize"
+            android:layout_weight="1"
+            android:singleLine="true"/>
 
 
-    <Button
-        android:id="@+id/button_change_num"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="change_name" />
+        <Button
+            android:id="@+id/button_change_num"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="change_name"
+            android:layout_weight="1"
+            android:singleLine="true"/>
 
-    <Button
-        android:id="@+id/button_change_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="read from file" />
-
+        <Button
+            android:id="@+id/button_change_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="read from file"
+            android:layout_weight="1"
+            android:singleLine="true"/>
+    </LinearLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_deals"
         android:layout_width="match_parent"
