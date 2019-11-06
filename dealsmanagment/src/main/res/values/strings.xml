@@ -8,4 +8,5 @@
     <string name="load_xls">load from xls file</string>
     <string name="choose_flile">open file</string>
     <string name="deal_current">продажи</string>
+    <string name="clear_deals">clear deals</string>
 </resources>

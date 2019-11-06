@@ -7,4 +7,9 @@
     <item
         android:id="@+id/choose_file_menu_item"
         android:title="@string/choose_flile"/>
+
+    <item
+        android:id="@+id/clear_deals_menu_item"
+        android:title="@string/clear_deals"/>
+
 </menu>

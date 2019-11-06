@@ -1,16 +1,10 @@
 package com.gecko.dealsmanagment;
 
-import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
@@ -23,17 +17,13 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
-public class DealsKeeper extends AppCompatActivity {
+public class DealsKeeper{
 
     private static final String TAG = "myLog";
     private static final String SAVE_DEALS_FILE_NAME = "deals.save";
@@ -117,16 +107,18 @@ public class DealsKeeper extends AppCompatActivity {
                 Cell cellRealVolume = row.getCell(5);
                 Cell cellToPay = row.getCell(7);
                 Cell cellStartMonth = row.getCell(12);
-                Log.d(TAG, "start month cell["+ i + "] value = " + cellStartMonth.getNumericCellValue());
-                Calendar startDate = Calendar.getInstance();
-                startDate.set(1900, 00,01);
-                startDate.add(Calendar.DAY_OF_YEAR, (int)cellStartMonth.getNumericCellValue());
-                startDate.set(Calendar.DAY_OF_MONTH, 1);
+                Cell cellBalance = row.getCell(6);
+                Calendar startDate = msXlsDateToCalendar((int)cellStartMonth.getNumericCellValue());
                 Log.d(TAG, cellFirmName.getStringCellValue() +
                         ": startDate = " + startDate.get(Calendar.YEAR)+"."+(startDate.get(Calendar.MONTH)+1)+"."+startDate.get(Calendar.DAY_OF_MONTH));
-
-
                 Cell cellDuration = row.getCell(14);
+                Cell cellPayPlanDate = row.getCell(8);
+                Calendar payPlanDate = msXlsDateToCalendar((int)cellPayPlanDate.getNumericCellValue());
+                Cell cellPaid = row.getCell(9);
+                Cell cellPayRealDate = row.getCell(10);
+                Calendar payRealDate = msXlsDateToCalendar((int)cellPayRealDate.getNumericCellValue());
+
+
 //                Log.d(TAG, "cellFirmName[" + i + "] = " + cellFirmName.getStringCellValue());
                 Deal d = new Deal(cellOwner.getStringCellValue()
                         ,cellFirmName.getStringCellValue()
@@ -137,6 +129,10 @@ public class DealsKeeper extends AppCompatActivity {
                         ,startDate
                         ,(short)cellDuration.getNumericCellValue());
                 d.setToPay((float)cellToPay.getNumericCellValue());
+                d.setBalance((float)cellBalance.getNumericCellValue());
+                d.setPayPlanDate(payPlanDate);
+                d.setPaid((int)cellPaid.getNumericCellValue());
+                d.setPayRealDate(payRealDate);
                 deals.add(d);
 
             }
@@ -149,6 +145,12 @@ public class DealsKeeper extends AppCompatActivity {
         return mDeals;
     }
 
+    private Calendar msXlsDateToCalendar(int msXlsDate){
+        Calendar date = Calendar.getInstance();
+        date.set(1900,00,01);
+        date.add(Calendar.DAY_OF_MONTH, msXlsDate-2);
+        return date;
+    }
 
     public void serializeDeals(){
         Log.d(TAG, "start Serializing deals array");

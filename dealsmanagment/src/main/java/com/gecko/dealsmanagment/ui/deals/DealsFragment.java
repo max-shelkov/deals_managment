@@ -172,6 +172,9 @@ public class DealsFragment extends Fragment {
         public void onClick(View v) {
             String s = "item " + mDeal.getName() + "clicked";
             Toast.makeText(getActivity(), s, Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(getActivity(), DealDetails.class);
+
+            startActivity(intent);
         }
     }
 
@@ -223,6 +226,9 @@ public class DealsFragment extends Fragment {
                 Toast.makeText(getActivity(), "choose file", Toast.LENGTH_LONG).show();
                 performFileSearch();
 //                startAdditionalActivity();
+                break;
+            case R.id.clear_deals_menu_item:
+                mDealsViewModel.clearDeals();
                 break;
         }
 

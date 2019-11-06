@@ -28,16 +28,16 @@ public class Deal implements Serializable {
     private float mPriceVolume; //
     private float mRealVolume;  //
     private float mDiscount;    //
-    private float mBalance;
-    private float mToPay;
-    private ArrayList<LocalDate> mPayPlanDate;
-    private float mPaid;
-    private ArrayList<LocalDate> mPayRealDate;
-    private Calendar mStartMonth;
-    private Calendar mFinishMonth;
-    private short mDuration;
+    private float mBalance;     //
+    private float mToPay;       //
+    private Calendar mPayPlanDate; //
+    private float mPaid;        //
+    private Calendar mPayRealDate;  //
+    private Calendar mStartMonth;   //
+    private Calendar mFinishMonth;  //
+    private short mDuration;    //
     private boolean mCleared;
-    private boolean newVariable;
+
 
 /*
     public Deal(String owner, String name, String contractor, String status,
@@ -77,9 +77,9 @@ public class Deal implements Serializable {
 
         mBalance = 0;
         mToPay = 0;
-        mPayPlanDate = new ArrayList<>();
+        mPayPlanDate = null;
         mPaid = 0;
-        mPayRealDate = new ArrayList<>();
+        mPayRealDate = null;
         mFinishMonth = mStartMonth;
         mFinishMonth.add(Calendar.MONTH, duration);
         mDiscount = 100 - 100*mRealVolume/mPriceVolume;
@@ -127,5 +127,43 @@ public class Deal implements Serializable {
         return mPriceVolume;
     }
 
+    public float getBalance() {
+        return mBalance;
+    }
 
+    public void setBalance(float balance) {
+        mBalance = balance;
+    }
+
+    public Calendar getPayPlanDate() {
+        return mPayPlanDate;
+    }
+
+    public void setPayPlanDate(Calendar payPlanDate) {
+        mPayPlanDate = payPlanDate;
+    }
+
+    public float getPaid() {
+        return mPaid;
+    }
+
+    public void setPaid(float paid) {
+        mPaid = paid;
+    }
+
+    public Calendar getPayRealDate() {
+        return mPayRealDate;
+    }
+
+    public void setPayRealDate(Calendar payRealDate) {
+        mPayRealDate = payRealDate;
+    }
+
+    public short getDuration() {
+        return mDuration;
+    }
+
+    public void setDuration(short duration) {
+        mDuration = duration;
+    }
 }
