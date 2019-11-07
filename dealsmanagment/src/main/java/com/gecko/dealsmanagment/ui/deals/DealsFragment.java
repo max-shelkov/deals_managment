@@ -33,7 +33,9 @@ import java.util.List;
 public class DealsFragment extends Fragment {
 
     public static final String TAG = "myLog";
+
     private static final int READ_REQUEST_CODE = 42;
+    private static final int DEAL_DETAILS_REQUEST_CODE = 43;
 
     private DealsViewModel mDealsViewModel;
 
@@ -170,11 +172,11 @@ public class DealsFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-            String s = "item " + mDeal.getName() + "clicked";
-            Toast.makeText(getActivity(), s, Toast.LENGTH_LONG).show();
+//            String s = "item " + mDeal.getName() + "clicked";
+//            Toast.makeText(getActivity(), s, Toast.LENGTH_LONG).show();
             Intent intent = new Intent(getActivity(), DealDetails.class);
-
-            startActivity(intent);
+            intent.putExtra("deal", mDeal);
+            startActivityForResult(intent, DEAL_DETAILS_REQUEST_CODE);
         }
     }
 
@@ -255,6 +257,10 @@ public class DealsFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 //        super.onActivityResult(requestCode, resultCode, data);
+        if (data == null) {
+            Toast.makeText(getActivity(), "data is null", Toast.LENGTH_LONG).show();
+            return;
+        }
         if (requestCode == READ_REQUEST_CODE && resultCode == Activity.RESULT_OK){
             Uri uri = null;
             if (data != null) {
@@ -262,6 +268,13 @@ public class DealsFragment extends Fragment {
                 Log.i(TAG, "Uri: " + uri.getPath());
                 loadDealsFromXls(uri);
             }
+        }
+
+        if (requestCode == DEAL_DETAILS_REQUEST_CODE && resultCode == Activity.RESULT_OK){
+            Log.d(TAG, "got activity result");
+            Deal d = (Deal) data.getSerializableExtra("edited_deal");
+            Toast.makeText(getActivity(), d.getName(), Toast.LENGTH_LONG).show();
+
         }
     }
 }

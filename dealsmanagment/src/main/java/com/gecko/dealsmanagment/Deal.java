@@ -3,8 +3,6 @@ package com.gecko.dealsmanagment;
 import androidx.annotation.NonNull;
 
 import java.io.Serializable;
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.UUID;
 
@@ -19,24 +17,24 @@ public class Deal implements Serializable {
     public static final String DEAL_STATUS_PROLONGATION = "prolongation_deal";
 
 
-    private UUID mId;           //+
-    private String mOwner;      //+
-    private String mName;       //
-    private String mContractor; //
-    private String mStatus;     //
-    private float mAmount;      //
-    private float mPriceVolume; //
-    private float mRealVolume;  //
-    private float mDiscount;    //
-    private float mBalance;     //
-    private float mToPay;       //
-    private Calendar mPayPlanDate; //
-    private float mPaid;        //
-    private Calendar mPayRealDate;  //
-    private Calendar mStartMonth;   //
-    private Calendar mFinishMonth;  //
-    private short mDuration;    //
-    private boolean mCleared;
+    private UUID mId;           //1
+    private String mOwner;      //2
+    private String mName;       //3
+    private String mContractor; //4
+    private String mStatus;     //5
+    private float mAmount;      //6
+    private float mPriceVolume; //7
+    private float mRealVolume;  //8
+    private float mDiscount;    //9
+    private float mBalance;     //10
+    private float mToPay;       //11
+    private Calendar mPayPlanDate; //12
+    private float mPaid;        //13
+    private Calendar mPayRealDate;  //14
+    private Calendar mStartMonth;   //15
+    private Calendar mFinishMonth;  //16
+    private short mDuration;    //17
+//    private boolean mCleared;
 
 
 /*
@@ -80,11 +78,12 @@ public class Deal implements Serializable {
         mPayPlanDate = null;
         mPaid = 0;
         mPayRealDate = null;
-        mFinishMonth = mStartMonth;
-        mFinishMonth.add(Calendar.MONTH, duration);
+        mFinishMonth = Calendar.getInstance();
+        mFinishMonth.set(mStartMonth.get(Calendar.YEAR), mStartMonth.get(Calendar.MONTH), mStartMonth.get(Calendar.DAY_OF_MONTH));
+        mFinishMonth.add(Calendar.MONTH, duration-1);
         mDiscount = 100 - 100*mRealVolume/mPriceVolume;
         mAmount = mRealVolume * duration;
-        mCleared = false;
+
 
     }
 
@@ -111,6 +110,10 @@ public class Deal implements Serializable {
         return mName;
     }
 
+    public void setName(String name) {
+        mName = name;
+    }
+
     public String getContractor() {
         return mContractor;
     }
@@ -125,6 +128,10 @@ public class Deal implements Serializable {
 
     public float getPriceVolume() {
         return mPriceVolume;
+    }
+
+    public float getRealVolume() {
+        return mRealVolume;
     }
 
     public float getBalance() {
@@ -165,5 +172,25 @@ public class Deal implements Serializable {
 
     public void setDuration(short duration) {
         mDuration = duration;
+        mFinishMonth = mStartMonth;
+        mFinishMonth.add(Calendar.MONTH, duration);
     }
+
+    public Calendar getStartMonth() {
+        return mStartMonth;
+    }
+
+    public void setStartMonth(Calendar startMonth) {
+        mStartMonth = startMonth;
+    }
+
+    public Calendar getFinishMonth() {
+        return mFinishMonth;
+    }
+
+    public void setFinishMonth(Calendar finishMonth) {
+        mFinishMonth = finishMonth;
+    }
+
+
 }

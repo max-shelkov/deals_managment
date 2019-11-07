@@ -113,11 +113,17 @@ public class DealsKeeper{
                         ": startDate = " + startDate.get(Calendar.YEAR)+"."+(startDate.get(Calendar.MONTH)+1)+"."+startDate.get(Calendar.DAY_OF_MONTH));
                 Cell cellDuration = row.getCell(14);
                 Cell cellPayPlanDate = row.getCell(8);
-                Calendar payPlanDate = msXlsDateToCalendar((int)cellPayPlanDate.getNumericCellValue());
+
+                Calendar payPlanDate = null;
+                if (cellPayPlanDate.getNumericCellValue() > 0){
+                    payPlanDate = msXlsDateToCalendar((int)cellPayPlanDate.getNumericCellValue());
+                }
                 Cell cellPaid = row.getCell(9);
                 Cell cellPayRealDate = row.getCell(10);
-                Calendar payRealDate = msXlsDateToCalendar((int)cellPayRealDate.getNumericCellValue());
-
+                Calendar payRealDate = null;
+                if (cellPayRealDate.getNumericCellValue()>0){
+                    payPlanDate = msXlsDateToCalendar((int)cellPayRealDate.getNumericCellValue());
+                }
 
 //                Log.d(TAG, "cellFirmName[" + i + "] = " + cellFirmName.getStringCellValue());
                 Deal d = new Deal(cellOwner.getStringCellValue()

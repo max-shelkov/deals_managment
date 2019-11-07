@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModel;
 import com.gecko.dealsmanagment.Deal;
 import com.gecko.dealsmanagment.DealsKeeper;
 
+import java.io.Serializable;
 import java.util.List;
 
 public class DealsViewModel extends ViewModel {
