@@ -27,7 +27,6 @@ import com.gecko.dealsmanagment.Deal;
 import com.gecko.dealsmanagment.DealsKeeper;
 import com.gecko.dealsmanagment.R;
 
-import java.io.File;
 import java.util.List;
 
 public class DealsFragment extends Fragment {
@@ -174,7 +173,7 @@ public class DealsFragment extends Fragment {
         public void onClick(View v) {
 //            String s = "item " + mDeal.getName() + "clicked";
 //            Toast.makeText(getActivity(), s, Toast.LENGTH_LONG).show();
-            Intent intent = new Intent(getActivity(), DealDetails.class);
+            Intent intent = new Intent(getActivity(), DealDetailsActivity.class);
             intent.putExtra("deal", mDeal);
             startActivityForResult(intent, DEAL_DETAILS_REQUEST_CODE);
         }
@@ -274,6 +273,7 @@ public class DealsFragment extends Fragment {
             Log.d(TAG, "got activity result");
             Deal d = (Deal) data.getSerializableExtra("edited_deal");
             Toast.makeText(getActivity(), d.getName(), Toast.LENGTH_LONG).show();
+            mDealsViewModel.changeDeal(d);
 
         }
     }

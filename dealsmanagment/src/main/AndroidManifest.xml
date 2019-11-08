@@ -21,7 +21,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.deals.DealDetails">
+        <activity android:name=".ui.deals.DealDetailsActivity">
 
         </activity>
     </application>

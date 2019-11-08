@@ -1,24 +1,28 @@
 package com.gecko.dealsmanagment.ui.deals;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 
 import com.gecko.dealsmanagment.Deal;
 import com.gecko.dealsmanagment.R;
 
 import static com.gecko.dealsmanagment.GeckoUtils.*;
 
-public class DealDetails extends AppCompatActivity {
+public class DealDetailsActivity extends AppCompatActivity {
 
-    public static final String TAG = "myLog";
-
+    private static final String TAG = "myLog";
+    private static final String DIALOG_TAG = "money_dialog";
     TextView mCompanyNameTextView;
     TextView mContractorTextView;
     TextView mStartDateTextView;
@@ -29,9 +33,13 @@ public class DealDetails extends AppCompatActivity {
     TextView mPaidTextView;
     TextView mToPayDateTextView;
     TextView mPaidDateTextView;
+    TextView mOwnerTextView;
     Button mButtonOk;
 
+    DialogFragment mDialogFragment;
+
     Deal mDeal;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,6 +47,8 @@ public class DealDetails extends AppCompatActivity {
         setContentView(R.layout.activity_deal_details);
 
         mDeal = (Deal) getIntent().getSerializableExtra("deal");
+
+        mDialogFragment = new SetMoneyDialogFragment();
 
         mCompanyNameTextView = findViewById(R.id.company_name_text_view);
         mCompanyNameTextView.setText(mDeal.getName());
@@ -64,12 +74,24 @@ public class DealDetails extends AppCompatActivity {
 
         mPaidTextView = findViewById(R.id.paid_text_view);
         mPaidTextView.setText(mDeal.getPaid()+"руб.");
+        mPaidTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDialogFragment.show(getSupportFragmentManager(), DIALOG_TAG);
+//                mDeal.setPaid(5500.25f);
+//                mPaidTextView.setText(""+mDeal.getPaid());
+
+            }
+        });
 
         mToPayDateTextView = findViewById(R.id.to_pay_date_text_view);
         mToPayDateTextView.setText(dateCalendarToString(mDeal.getPayPlanDate()));
 
         mPaidDateTextView = findViewById(R.id.paid_date_text_view);
         mPaidDateTextView.setText(dateCalendarToString(mDeal.getPayRealDate()));
+
+        mOwnerTextView = findViewById(R.id.owner_text_view);
+        mOwnerTextView.setText(mDeal.getOwner());
 
         mButtonOk = findViewById(R.id.button_ok);
         mButtonOk.setOnClickListener(new View.OnClickListener() {
@@ -80,6 +102,8 @@ public class DealDetails extends AppCompatActivity {
                 finish();
             }
         });
+
+
     }
 
     private void prepareDataForCallingActivity(){
@@ -87,12 +111,5 @@ public class DealDetails extends AppCompatActivity {
         intent.putExtra("edited_deal", mDeal);
         setResult(RESULT_OK, intent);
     }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Log.d(TAG, "onPause action");
-    }
-
 
 }

@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import static com.gecko.dealsmanagment.GeckoUtils.msXlsDateToCalendar;
+
 public class DealsKeeper{
 
     private static final String TAG = "myLog";
@@ -119,10 +121,11 @@ public class DealsKeeper{
                     payPlanDate = msXlsDateToCalendar((int)cellPayPlanDate.getNumericCellValue());
                 }
                 Cell cellPaid = row.getCell(9);
+
                 Cell cellPayRealDate = row.getCell(10);
                 Calendar payRealDate = null;
                 if (cellPayRealDate.getNumericCellValue()>0){
-                    payPlanDate = msXlsDateToCalendar((int)cellPayRealDate.getNumericCellValue());
+                    payRealDate = msXlsDateToCalendar((int)cellPayRealDate.getNumericCellValue());
                 }
 
 //                Log.d(TAG, "cellFirmName[" + i + "] = " + cellFirmName.getStringCellValue());
@@ -137,7 +140,7 @@ public class DealsKeeper{
                 d.setToPay((float)cellToPay.getNumericCellValue());
                 d.setBalance((float)cellBalance.getNumericCellValue());
                 d.setPayPlanDate(payPlanDate);
-                d.setPaid((int)cellPaid.getNumericCellValue());
+                d.setPaid((float)cellPaid.getNumericCellValue());
                 d.setPayRealDate(payRealDate);
                 deals.add(d);
 
@@ -151,12 +154,7 @@ public class DealsKeeper{
         return mDeals;
     }
 
-    private Calendar msXlsDateToCalendar(int msXlsDate){
-        Calendar date = Calendar.getInstance();
-        date.set(1900,00,01);
-        date.add(Calendar.DAY_OF_MONTH, msXlsDate-2);
-        return date;
-    }
+
 
     public void serializeDeals(){
         Log.d(TAG, "start Serializing deals array");
@@ -189,5 +187,11 @@ public class DealsKeeper{
     }
 
 
-
+    public void changeDeal(Deal d) {
+        for (int i = 0; i < mDeals.size(); i++) {
+            if(d.getId().equals(mDeals.get(i).getId())){
+                mDeals.set(i, d);
+            }
+        }
+    }
 }

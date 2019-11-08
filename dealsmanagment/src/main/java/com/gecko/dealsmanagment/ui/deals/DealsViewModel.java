@@ -67,4 +67,9 @@ public class DealsViewModel extends ViewModel {
         mDealsKeeper.getValue().getDeals().clear();
         mDealsKeeper.setValue(mDealsKeeper.getValue());
     }
+
+    public void changeDeal(Deal d) {
+        mDealsKeeper.getValue().changeDeal(d);
+        mDealsKeeper.setValue(mDealsKeeper.getValue());
+    }
 }

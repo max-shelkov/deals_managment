@@ -16,12 +16,8 @@
             app:cardCornerRadius="16dp"
             android:layout_margin="12dp"
             android:layout_marginBottom="25dp"
-            android:background="@color/color2GisGreenMedium"
-            >
-
-
-
-                <LinearLayout
+            android:background="@color/color2GisGreenMedium">
+            <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
@@ -42,8 +38,15 @@
                         android:text="Contractor"
                         android:textAlignment="center"
                         android:layout_marginBottom="8dp"
-                        android:textSize="15sp"
+                        android:textSize="18sp"
                         />
+
+                    <View
+                        android:id="@+id/divider_up"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="?android:attr/listDivider" />
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -55,6 +58,7 @@
                             android:layout_height="wrap_content"
                             android:textAlignment="center"
                             android:layout_weight="1"
+                            android:textSize="18sp"
                             android:text="00.00.2019"/>
                         <TextView
                             android:id="@+id/finish_date_text_view"
@@ -62,6 +66,7 @@
                             android:layout_height="wrap_content"
                             android:textAlignment="center"
                             android:layout_weight="1"
+                            android:textSize="18sp"
                             android:text="00.00.2019"/>
                     </LinearLayout>
                     <LinearLayout
@@ -75,6 +80,7 @@
                             android:layout_height="wrap_content"
                             android:textAlignment="center"
                             android:layout_weight="1"
+                            android:textSize="18sp"
                             android:text="руб."/>
                         <TextView
                             android:id="@+id/v_real_text_view"
@@ -82,6 +88,7 @@
                             android:layout_height="wrap_content"
                             android:textAlignment="center"
                             android:layout_weight="1"
+                            android:textSize="18sp"
                             android:text="руб."/>
                     </LinearLayout>
                     <LinearLayout
@@ -94,6 +101,7 @@
                             android:layout_height="wrap_content"
                             android:textAlignment="center"
                             android:layout_weight="1"
+                            android:textSize="18sp"
                             android:text="руб."/>
                         <TextView
                             android:id="@+id/paid_text_view"
@@ -101,6 +109,7 @@
                             android:layout_height="wrap_content"
                             android:textAlignment="center"
                             android:layout_weight="1"
+                            android:textSize="18sp"
                             android:text="руб."/>
                     </LinearLayout>
                     <LinearLayout
@@ -114,6 +123,7 @@
                             android:layout_height="wrap_content"
                             android:textAlignment="center"
                             android:layout_weight="1"
+                            android:textSize="18sp"
                             android:text="to pay date"/>
                         <TextView
                             android:id="@+id/paid_date_text_view"
@@ -121,8 +131,23 @@
                             android:layout_height="wrap_content"
                             android:textAlignment="center"
                             android:layout_weight="1"
+                            android:textSize="18sp"
                             android:text="paid date"/>
                     </LinearLayout>
+
+                    <View
+                        android:id="@+id/divider_down"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="?android:attr/listDivider" />
+
+                    <TextView
+                        android:id="@+id/owner_text_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        android:textSize="18sp"
+                        android:text="Curator"/>
                     <Button
                         android:id="@+id/button_ok"
                         android:layout_width="match_parent"

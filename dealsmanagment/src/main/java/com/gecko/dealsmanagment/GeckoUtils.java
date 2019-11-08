@@ -32,4 +32,11 @@ public class GeckoUtils {
         sb.append(date.get(Calendar.YEAR));
         return sb.toString();
     }
+
+    public static Calendar msXlsDateToCalendar(int msXlsDate){
+        Calendar date = Calendar.getInstance();
+        date.set(1900,00,01);
+        date.add(Calendar.DAY_OF_MONTH, msXlsDate-2);
+        return date;
+    }
 }
