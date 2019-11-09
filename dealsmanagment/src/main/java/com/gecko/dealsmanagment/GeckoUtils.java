@@ -39,4 +39,8 @@ public class GeckoUtils {
         date.add(Calendar.DAY_OF_MONTH, msXlsDate-2);
         return date;
     }
+
+    public static String formatedFloat(float num){
+        return String.format("%,.2f",num);
+    }
 }
