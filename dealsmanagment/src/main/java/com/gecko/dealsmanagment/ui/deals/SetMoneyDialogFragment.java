@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import com.gecko.dealsmanagment.GeckoUtils;
 import com.gecko.dealsmanagment.R;
 
 import java.util.Calendar;
@@ -27,7 +28,7 @@ public class SetMoneyDialogFragment extends DialogFragment implements View.OnCli
     private Button mOkButton;
     private Button mCancelButton;
 
-    private float mMoneyPaid;
+    private float mMoneyAmount;
     private Calendar mDateOfPayment;
 
     private String mDialogTag;
@@ -50,8 +51,19 @@ public class SetMoneyDialogFragment extends DialogFragment implements View.OnCli
         mCancelButton.setOnClickListener(this);
 
         mDialogTag = getArguments().getString("tag");
+        mMoneyAmount = getArguments().getFloat("money");
+        mDateOfPayment = (Calendar) getArguments().getSerializable("date");
         Log.d(TAG, "tag from activity = " + mDialogTag);
         return v;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mMoneyEditText.setText("");
+        mMoneyEditText.setHint(""+mMoneyAmount);
+        mDateEditText.setText("");
+        mDateEditText.setHint(GeckoUtils.dateCalendarToString(mDateOfPayment));
     }
 
     @Override
@@ -59,18 +71,27 @@ public class SetMoneyDialogFragment extends DialogFragment implements View.OnCli
         switch (v.getId()){
             case R.id.dialog_ok_button:
                 try {
-                    mMoneyPaid = Float.parseFloat(mMoneyEditText.getText().toString());
-                    mDateOfPayment = Calendar.getInstance();
-                    if(!mDateEditText.getText().toString().equals("")){
+                    if(mMoneyEditText.getText().toString().equals("")){
+                        Toast.makeText(getActivity(), "Сумма не указана, оставляем прежнуюю сумму", Toast.LENGTH_LONG ).show();
+//                        dismiss();
+                    }else {
+                        mMoneyAmount = Float.parseFloat(mMoneyEditText.getText().toString());
+                    }
+                    if(mDateEditText.getText().toString().equals("")) {
+                        Toast.makeText(getActivity(), "Дата не указана, используем прежнюю", Toast.LENGTH_LONG ).show();
+//                        dismiss();
+                    }else if(mDateEditText.getText().toString().equals("0")){
+                        mDateOfPayment = null;
+                    } else {
+                        mDateOfPayment = Calendar.getInstance();
                         mDateOfPayment.set(Calendar.DAY_OF_MONTH, Integer.parseInt(mDateEditText.getText().toString()));
                     }
                 } catch (Exception e){
                     Toast.makeText(getActivity(), "Введены некорретные данные", Toast.LENGTH_LONG ).show();
                 }
-                mListener.onDialogFragmentDataEntered(mMoneyPaid, mDateOfPayment, mDialogTag);
+                mListener.onDialogFragmentDataEntered(mMoneyAmount, mDateOfPayment, mDialogTag);
                 break;
             case R.id.dialog_cancel_button:
-
                 break;
         }
         dismiss();

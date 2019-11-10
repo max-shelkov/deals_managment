@@ -59,9 +59,12 @@ public class DealDetailsActivity extends AppCompatActivity implements SetMoneyDi
         mToPayTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Bundle tag = new Bundle();
-                tag.putString("tag", DIALOG_PAY_PLAN_TAG);
-                mDialogFragment.setArguments(tag);
+                Bundle bundle = new Bundle();
+                bundle.putString("tag", DIALOG_PAY_PLAN_TAG);
+                bundle.putFloat("money", mDeal.getToPay());
+                bundle.putSerializable("date", mDeal.getPayPlanDate());
+
+                mDialogFragment.setArguments(bundle);
                 mDialogFragment.show(getSupportFragmentManager(), DIALOG_PAY_PLAN_TAG);
             }
         });
@@ -69,9 +72,11 @@ public class DealDetailsActivity extends AppCompatActivity implements SetMoneyDi
         mPaidTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Bundle tag = new Bundle();
-                tag.putString("tag", DIALOG_PAY_FACT_TAG);
-                mDialogFragment.setArguments(tag);
+                Bundle bundle = new Bundle();
+                bundle.putString("tag", DIALOG_PAY_FACT_TAG);
+                bundle.putFloat("money", mDeal.getPaid());
+                bundle.putSerializable("date", mDeal.getPayRealDate());
+                mDialogFragment.setArguments(bundle);
                 mDialogFragment.show(getSupportFragmentManager(), DIALOG_PAY_FACT_TAG);
             }
         });
