@@ -1,19 +1,175 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/color2GisBlueLight"
+    android:orientation="vertical"
+    android:layout_marginBottom="?attr/actionBarSize">
 
-    <TextView
-        android:id="@+id/text_dashboard"
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="8dp"
+                    android:layout_margin="8dp">
+                <TextView
+                    android:id="@+id/current_price_volume_text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="26sp"
+                    android:textAlignment="center"
+                    android:text="Vp:"
+                    android:background="@color/color2GisGreenLight"/>
+                </com.google.android.material.card.MaterialCardView>
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="8dp"
+                    android:layout_margin="8dp">
+                    <TextView
+                        android:id="@+id/current_real_volume_text_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="26sp"
+                        android:textAlignment="center"
+                        android:text="Vr:"
+                        android:background="@color/color2GisGreenLight"/>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+            <TextView
+                android:id="@+id/text_dashboard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textSize="20sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="26sp"
+                android:layout_margin="18dp"
+                android:textAlignment="center"
+                android:background="@color/color2GisGreenLight"
+                android:text="some text" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="26sp"
+                android:layout_margin="18dp"
+                android:textAlignment="center"
+                android:background="@color/color2GisGreenLight"
+                android:text="some text" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="26sp"
+                android:layout_margin="18dp"
+                android:textAlignment="center"
+                android:background="@color/color2GisGreenLight"
+                android:text="some text" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="26sp"
+                android:layout_margin="18dp"
+                android:textAlignment="center"
+                android:background="@color/color2GisGreenLight"
+                android:text="some text" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="26sp"
+                android:layout_margin="18dp"
+                android:textAlignment="center"
+                android:background="@color/color2GisGreenLight"
+                android:text="some text" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="26sp"
+                android:layout_margin="18dp"
+                android:textAlignment="center"
+                android:background="@color/color2GisGreenLight"
+                android:text="some text" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="26sp"
+                android:layout_margin="18dp"
+                android:textAlignment="center"
+                android:background="@color/color2GisGreenLight"
+                android:text="some text" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="26sp"
+                android:layout_margin="18dp"
+                android:textAlignment="center"
+                android:background="@color/color2GisGreenLight"
+                android:text="some text" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="26sp"
+                android:layout_margin="18dp"
+                android:textAlignment="center"
+                android:background="@color/color2GisGreenLight"
+                android:text="some text" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="26sp"
+                android:layout_margin="18dp"
+                android:textAlignment="center"
+                android:background="@color/color2GisGreenLight"
+                android:text="some text" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="26sp"
+                android:layout_margin="18dp"
+                android:textAlignment="center"
+                android:background="@color/color2GisGreenLight"
+                android:text="some text" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="26sp"
+                android:layout_margin="18dp"
+                android:textAlignment="center"
+                android:background="@color/color2GisGreenLight"
+                android:text="some text" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="26sp"
+                android:layout_margin="18dp"
+                android:textAlignment="center"
+                android:background="@color/color2GisGreenLight"
+                android:text="some text" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="26sp"
+                android:layout_margin="18dp"
+                android:textAlignment="center"
+                android:background="@color/color2GisGreenLight"
+                android:text="finish text" />
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

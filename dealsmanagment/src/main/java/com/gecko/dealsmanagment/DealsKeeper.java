@@ -105,6 +105,7 @@ public class DealsKeeper{
                 }
                 Cell cellOwner = row.getCell(11);
                 Cell cellContractor = row.getCell(2);
+                Cell cellStatus = row.getCell(3);
                 Cell cellPriceVolume = row.getCell(4);
                 Cell cellRealVolume = row.getCell(5);
                 Cell cellToPay = row.getCell(7);
@@ -132,7 +133,7 @@ public class DealsKeeper{
                 Deal d = new Deal(cellOwner.getStringCellValue()
                         ,cellFirmName.getStringCellValue()
                         ,cellContractor.getStringCellValue()
-                        ,Deal.DEAL_STATUS_CURRENT
+                        ,defineStatus(cellStatus.getStringCellValue())
                         ,(float)cellPriceVolume.getNumericCellValue()
                         ,(float)cellRealVolume.getNumericCellValue()
                         ,startDate
@@ -168,7 +169,7 @@ public class DealsKeeper{
             Log.e(TAG, "error when serializing" + e);
             e.printStackTrace();
         }
-        printDealsToLog();
+//        printDealsToLog();
         Log.d(TAG, "Serialing deals array finished");
     }
 
@@ -181,17 +182,68 @@ public class DealsKeeper{
             Log.e(TAG, "error when deserializing" + e);
             e.printStackTrace();
         }
-        printDealsToLog();
+//        printDealsToLog();
         Log.d(TAG, "Deserializing deals array finished");
         return mDeals;
     }
 
-
-    public void changeDeal(Deal d) {
+    public void replaceDeal(Deal d) {
         for (int i = 0; i < mDeals.size(); i++) {
             if(d.getId().equals(mDeals.get(i).getId())){
                 mDeals.set(i, d);
             }
+        }
+    }
+
+    public float getCurrentVolumePrice(){
+        float vol = 0;
+        for (int i = 0; i < mDeals.size(); i++) {
+            if (mDeals.get(i).getStatus().equals(Deal.DEAL_STATUS_CURRENT)
+                ||mDeals.get(i).getStatus().equals(Deal.DEAL_STATUS_PROLONGATION)
+                ||mDeals.get(i).getStatus().equals(Deal.DEAL_STATUS_BREAK)
+                ||mDeals.get(i).getStatus().equals(Deal.DEAL_STATUS_EXCHANGE)){
+                vol = vol + mDeals.get(i).getPriceVolume();
+            }
+        }
+        return vol;
+    }
+
+    public float getCurrentVolumeReal(){
+        float vol = 0;
+        float x = 0;
+        for (int i = 0; i < mDeals.size(); i++) {
+            if (mDeals.get(i).getStatus().equals(Deal.DEAL_STATUS_CURRENT)
+                    ||mDeals.get(i).getStatus().equals(Deal.DEAL_STATUS_PROLONGATION)
+                    ||mDeals.get(i).getStatus().equals(Deal.DEAL_STATUS_BREAK)
+                    ||mDeals.get(i).getStatus().equals(Deal.DEAL_STATUS_EXCHANGE)){
+                x = mDeals.get(i).getRealVolume();
+
+            }
+            vol = vol + x;
+
+            Log.d(TAG, "company = " + mDeals.get(i).getName() +" Vf = " + mDeals.get(i).getRealVolume()+" vol real = " + vol);
+        }
+        return vol;
+
+    }
+
+    private String defineStatus(String status){
+        if (status.equals("Продажи")){
+            return Deal.DEAL_STATUS_CURRENT;
+        } else if (status.equals("Расторжение")){
+            return Deal.DEAL_STATUS_BREAK;
+        } else if (status.equals("Новый")){
+            return Deal.DEAL_STATUS_NEW;
+        } else if (status.equals("Допродажа")){
+            return Deal.DEAL_STATUS_OVERSELL;
+        }else if (status.equals("Продление")){
+            return Deal.DEAL_STATUS_PROLONGATION;
+        } else if (status.equals("Регионалка")){
+            return Deal.DEAL_STATUS_REGIONAL_OUT;
+        } else if(status.equals("Бартер")){
+            return Deal.DEAL_STATUS_EXCHANGE;
+        } else {
+            return "";
         }
     }
 }

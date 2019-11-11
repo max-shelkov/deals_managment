@@ -3,14 +3,12 @@ package com.gecko.dealsmanagment.ui.deals;
 import android.net.Uri;
 import android.util.Log;
 
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.gecko.dealsmanagment.Deal;
 import com.gecko.dealsmanagment.DealsKeeper;
 
-import java.io.Serializable;
 import java.util.List;
 
 public class DealsViewModel extends ViewModel {
@@ -69,7 +67,7 @@ public class DealsViewModel extends ViewModel {
     }
 
     public void changeDeal(Deal d) {
-        mDealsKeeper.getValue().changeDeal(d);
+        mDealsKeeper.getValue().replaceDeal(d);
         mDealsKeeper.setValue(mDealsKeeper.getValue());
     }
 }

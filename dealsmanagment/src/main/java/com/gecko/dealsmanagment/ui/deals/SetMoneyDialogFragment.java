@@ -73,18 +73,27 @@ public class SetMoneyDialogFragment extends DialogFragment implements View.OnCli
                 try {
                     if(mMoneyEditText.getText().toString().equals("")){
                         Toast.makeText(getActivity(), "Сумма не указана, оставляем прежнуюю сумму", Toast.LENGTH_LONG ).show();
-//                        dismiss();
                     }else {
                         mMoneyAmount = Float.parseFloat(mMoneyEditText.getText().toString());
                     }
                     if(mDateEditText.getText().toString().equals("")) {
                         Toast.makeText(getActivity(), "Дата не указана, используем прежнюю", Toast.LENGTH_LONG ).show();
-//                        dismiss();
                     }else if(mDateEditText.getText().toString().equals("0")){
                         mDateOfPayment = null;
                     } else {
+/*
                         mDateOfPayment = Calendar.getInstance();
                         mDateOfPayment.set(Calendar.DAY_OF_MONTH, Integer.parseInt(mDateEditText.getText().toString()));
+*/
+                        Calendar currentDate = Calendar.getInstance();
+                        Calendar enteredDate = Calendar.getInstance();
+                        enteredDate.set(Calendar.DAY_OF_MONTH, Integer.parseInt(mDateEditText.getText().toString()));
+                        if (enteredDate.get(Calendar.MONTH) == currentDate.get(Calendar.MONTH)){
+                            mDateOfPayment = enteredDate;
+                        } else{
+                            Toast.makeText(getActivity(), "Дата не корректна, используем прежнюю", Toast.LENGTH_LONG ).show();
+                        }
+
                     }
                 } catch (Exception e){
                     Toast.makeText(getActivity(), "Введены некорретные данные", Toast.LENGTH_LONG ).show();

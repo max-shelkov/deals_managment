@@ -15,6 +15,7 @@ public class Deal implements Serializable {
     public static final String DEAL_STATUS_REGIONAL_IN = "regional_in_deal";
     public static final String DEAL_STATUS_OVERSELL = "oversell_deal";
     public static final String DEAL_STATUS_PROLONGATION = "prolongation_deal";
+    public static final String DEAL_STATUS_EXCHANGE = "exchange_deal";
 
 
     private UUID mId;           //1
@@ -34,6 +35,7 @@ public class Deal implements Serializable {
     private Calendar mStartMonth;   //15
     private Calendar mFinishMonth;  //16
     private short mDuration;    //17
+    private String mNote;
 //    private boolean mCleared;
 
 
@@ -84,7 +86,10 @@ public class Deal implements Serializable {
         mDiscount = 100 - 100*mRealVolume/mPriceVolume;
         mAmount = mRealVolume * duration;
 
-
+        if (mFinishMonth.get(Calendar.YEAR) == Calendar.getInstance().get(Calendar.YEAR)&&
+                mFinishMonth.get(Calendar.MONTH) == Calendar.getInstance().get(Calendar.MONTH)){
+            mStatus = DEAL_STATUS_PROLONGATION;
+        }
     }
 
     public UUID getId() {
@@ -188,9 +193,15 @@ public class Deal implements Serializable {
         return mFinishMonth;
     }
 
-    public void setFinishMonth(Calendar finishMonth) {
-        mFinishMonth = finishMonth;
+    public String getStatus() {
+        return mStatus;
     }
 
+    public String getNote() {
+        return mNote;
+    }
 
+    public void setNote(String note) {
+        mNote = note;
+    }
 }
