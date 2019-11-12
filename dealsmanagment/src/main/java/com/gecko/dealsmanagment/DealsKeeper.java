@@ -9,6 +9,7 @@ import android.util.Log;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -23,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import static com.gecko.dealsmanagment.GeckoUtils.msXlsCellToInt;
 import static com.gecko.dealsmanagment.GeckoUtils.msXlsDateToCalendar;
 
 public class DealsKeeper{
@@ -107,7 +109,9 @@ public class DealsKeeper{
                 Cell cellContractor = row.getCell(2);
                 Cell cellStatus = row.getCell(3);
                 Cell cellPriceVolume = row.getCell(4);
+                cellPriceVolume.setCellType(CellType.STRING);
                 Cell cellRealVolume = row.getCell(5);
+                cellRealVolume.setCellType(CellType.STRING);
                 Cell cellToPay = row.getCell(7);
                 Cell cellStartMonth = row.getCell(12);
                 Cell cellBalance = row.getCell(6);
@@ -134,14 +138,14 @@ public class DealsKeeper{
                         ,cellFirmName.getStringCellValue()
                         ,cellContractor.getStringCellValue()
                         ,defineStatus(cellStatus.getStringCellValue())
-                        ,(float)cellPriceVolume.getNumericCellValue()
-                        ,(float)cellRealVolume.getNumericCellValue()
+                        ,msXlsCellToInt(cellPriceVolume.getStringCellValue())
+                        ,msXlsCellToInt(cellRealVolume.getStringCellValue())
                         ,startDate
-                        ,(short)cellDuration.getNumericCellValue());
-                d.setToPay((float)cellToPay.getNumericCellValue());
-                d.setBalance((float)cellBalance.getNumericCellValue());
+                        ,(int)cellDuration.getNumericCellValue());
+                d.setToPay((int)(cellToPay.getNumericCellValue()*100));
+                d.setBalance((int)(cellBalance.getNumericCellValue())*100);
                 d.setPayPlanDate(payPlanDate);
-                d.setPaid((float)cellPaid.getNumericCellValue());
+                d.setPaid((int)(cellPaid.getNumericCellValue())*100);
                 d.setPayRealDate(payRealDate);
                 deals.add(d);
 
@@ -195,8 +199,8 @@ public class DealsKeeper{
         }
     }
 
-    public float getCurrentVolumePrice(){
-        float vol = 0;
+    public int getCurrentVolumePrice(){
+        int vol = 0;
         for (int i = 0; i < mDeals.size(); i++) {
             if (mDeals.get(i).getStatus().equals(Deal.DEAL_STATUS_CURRENT)
                 ||mDeals.get(i).getStatus().equals(Deal.DEAL_STATUS_PROLONGATION)
@@ -208,9 +212,9 @@ public class DealsKeeper{
         return vol;
     }
 
-    public float getCurrentVolumeReal(){
-        float vol = 0;
-        float x = 0;
+    public int getCurrentVolumeReal(){
+        int vol = 0;
+        int x = 0;
         for (int i = 0; i < mDeals.size(); i++) {
             if (mDeals.get(i).getStatus().equals(Deal.DEAL_STATUS_CURRENT)
                     ||mDeals.get(i).getStatus().equals(Deal.DEAL_STATUS_PROLONGATION)

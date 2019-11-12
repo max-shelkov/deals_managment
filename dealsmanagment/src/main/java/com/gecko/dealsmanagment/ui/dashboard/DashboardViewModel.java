@@ -21,7 +21,7 @@ public class DashboardViewModel extends ViewModel {
 
     }
 
-    public float getCurrentVolumePrice(){
+    public int getCurrentVolumePrice(){
         return mDealsKeeper.getValue().getCurrentVolumePrice();
     }
 

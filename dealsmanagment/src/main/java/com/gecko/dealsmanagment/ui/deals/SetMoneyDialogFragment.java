@@ -28,7 +28,7 @@ public class SetMoneyDialogFragment extends DialogFragment implements View.OnCli
     private Button mOkButton;
     private Button mCancelButton;
 
-    private float mMoneyAmount;
+    private int mMoneyAmount;
     private Calendar mDateOfPayment;
 
     private String mDialogTag;
@@ -51,7 +51,7 @@ public class SetMoneyDialogFragment extends DialogFragment implements View.OnCli
         mCancelButton.setOnClickListener(this);
 
         mDialogTag = getArguments().getString("tag");
-        mMoneyAmount = getArguments().getFloat("money");
+        mMoneyAmount = getArguments().getInt("money");
         mDateOfPayment = (Calendar) getArguments().getSerializable("date");
         Log.d(TAG, "tag from activity = " + mDialogTag);
         return v;
@@ -61,7 +61,7 @@ public class SetMoneyDialogFragment extends DialogFragment implements View.OnCli
     public void onResume() {
         super.onResume();
         mMoneyEditText.setText("");
-        mMoneyEditText.setHint(""+mMoneyAmount);
+        mMoneyEditText.setHint(""+GeckoUtils.formattedInt(mMoneyAmount));
         mDateEditText.setText("");
         mDateEditText.setHint(GeckoUtils.dateCalendarToString(mDateOfPayment));
     }
@@ -74,7 +74,8 @@ public class SetMoneyDialogFragment extends DialogFragment implements View.OnCli
                     if(mMoneyEditText.getText().toString().equals("")){
                         Toast.makeText(getActivity(), "Сумма не указана, оставляем прежнуюю сумму", Toast.LENGTH_LONG ).show();
                     }else {
-                        mMoneyAmount = Float.parseFloat(mMoneyEditText.getText().toString());
+//                        mMoneyAmount = Integer.parseInt(mMoneyEditText.getText().toString());
+                        mMoneyAmount = GeckoUtils.msXlsCellToInt(mMoneyEditText.getText().toString());
                     }
                     if(mDateEditText.getText().toString().equals("")) {
                         Toast.makeText(getActivity(), "Дата не указана, используем прежнюю", Toast.LENGTH_LONG ).show();
@@ -117,6 +118,6 @@ public class SetMoneyDialogFragment extends DialogFragment implements View.OnCli
     }
 
     public interface SetMoneyDialogFragmentListener{
-        public void onDialogFragmentDataEntered(float money, Calendar date, String tag);
+        void onDialogFragmentDataEntered(int money, Calendar date, String tag);
     }
 }

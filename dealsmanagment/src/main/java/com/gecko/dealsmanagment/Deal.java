@@ -23,18 +23,18 @@ public class Deal implements Serializable {
     private String mName;       //3
     private String mContractor; //4
     private String mStatus;     //5
-    private float mAmount;      //6
-    private float mPriceVolume; //7
-    private float mRealVolume;  //8
+    private int mAmount;      //6
+    private int mPriceVolume; //7
+    private int mRealVolume;  //8
     private float mDiscount;    //9
-    private float mBalance;     //10
-    private float mToPay;       //11
+    private int mBalance;     //10
+    private int mToPay;       //11
     private Calendar mPayPlanDate; //12
-    private float mPaid;        //13
+    private int mPaid;        //13
     private Calendar mPayRealDate;  //14
     private Calendar mStartMonth;   //15
     private Calendar mFinishMonth;  //16
-    private short mDuration;    //17
+    private int mDuration;    //17
     private String mNote;
 //    private boolean mCleared;
 
@@ -64,7 +64,7 @@ public class Deal implements Serializable {
 */
 
     public Deal(String owner, String name, String contractor, String status,
-                float priceVolume, float realVolume, Calendar startMonth, short duration) {
+                int priceVolume, int realVolume, Calendar startMonth, int duration) {
         mId = UUID.randomUUID();
         mOwner = owner;
         mName = name;
@@ -123,27 +123,27 @@ public class Deal implements Serializable {
         return mContractor;
     }
 
-    public void setToPay(float toPay) {
+    public void setToPay(int toPay) {
         mToPay = toPay;
     }
 
-    public float getToPay() {
+    public int getToPay() {
         return mToPay;
     }
 
-    public float getPriceVolume() {
+    public int getPriceVolume() {
         return mPriceVolume;
     }
 
-    public float getRealVolume() {
+    public int getRealVolume() {
         return mRealVolume;
     }
 
-    public float getBalance() {
+    public int getBalance() {
         return mBalance;
     }
 
-    public void setBalance(float balance) {
+    public void setBalance(int balance) {
         mBalance = balance;
     }
 
@@ -155,11 +155,11 @@ public class Deal implements Serializable {
         mPayPlanDate = payPlanDate;
     }
 
-    public float getPaid() {
+    public int getPaid() {
         return mPaid;
     }
 
-    public void setPaid(float paid) {
+    public void setPaid(int paid) {
         mPaid = paid;
     }
 
@@ -171,7 +171,7 @@ public class Deal implements Serializable {
         mPayRealDate = payRealDate;
     }
 
-    public short getDuration() {
+    public int getDuration() {
         return mDuration;
     }
 

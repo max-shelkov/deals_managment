@@ -25,9 +25,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.gecko.dealsmanagment.Deal;
 import com.gecko.dealsmanagment.DealsKeeper;
+import com.gecko.dealsmanagment.GeckoUtils;
 import com.gecko.dealsmanagment.R;
 
 import java.util.List;
+
+import static com.gecko.dealsmanagment.GeckoUtils.formattedInt;
 
 public class DealsFragment extends Fragment {
 
@@ -64,14 +67,7 @@ public class DealsFragment extends Fragment {
         mDealsRecyclerView.setHasFixedSize(true);
         mDealsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        mDealsViewModel.getDealsKeeper().observe(this, new Observer<DealsKeeper>() {
-            @Override
-            public void onChanged(DealsKeeper dealsKeeper) {
-                Log.d(TAG, "got dealsKeeer observe notification");
-                Log.d(TAG, "mDeals.size = " + dealsKeeper.getDeals().size());
-                updateRecyclerView(dealsKeeper.getDeals());
-            }
-        });
+
 
         mButtonSerialize.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,6 +98,7 @@ public class DealsFragment extends Fragment {
             public void onClick(View v) {
                 Log.d(TAG, "load from xls clicked");
                 loadDealsFromXls();
+                mDealsViewModel.serializeDealsKeeper();
             }
         });
 
@@ -141,6 +138,21 @@ public class DealsFragment extends Fragment {
         mDealsViewModel.serializeDealsKeeper();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume action");
+        mDealsViewModel.getDealsKeeper().observe(this, new Observer<DealsKeeper>() {
+            @Override
+            public void onChanged(DealsKeeper dealsKeeper) {
+                Log.d(TAG, "got dealsKeeer observe notification");
+                Log.d(TAG, "mDeals.size = " + dealsKeeper.getDeals().size());
+                updateRecyclerView(dealsKeeper.getDeals());
+            }
+        });
+
+    }
+
     private class DealsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextView mFirmName;
@@ -164,8 +176,8 @@ public class DealsFragment extends Fragment {
             mDeal = d;
             mFirmName.setText(mDeal.getName()+" ["+mDeal.getContractor()+"]");
             mOwnerName.setText(mDeal.getOwner());
-            mPriceVolume.setText("Объем: "+mDeal.getPriceVolume());
-            mToPay.setText("К оплате: "+mDeal.getToPay());
+            mPriceVolume.setText("V: "+ formattedInt(mDeal.getPriceVolume()));
+            mToPay.setText("Rub: "+ formattedInt(mDeal.getToPay()));
 
         }
 
@@ -222,6 +234,7 @@ public class DealsFragment extends Fragment {
         switch (item.getItemId()){
             case R.id.load_xls_menu_item:
                 loadDealsFromXls();
+                mDealsViewModel.serializeDealsKeeper();
                 break;
             case R.id.choose_file_menu_item:
                 Toast.makeText(getActivity(), "choose file", Toast.LENGTH_LONG).show();
@@ -230,6 +243,7 @@ public class DealsFragment extends Fragment {
                 break;
             case R.id.clear_deals_menu_item:
                 mDealsViewModel.clearDeals();
+                mDealsViewModel.serializeDealsKeeper();
                 break;
         }
 

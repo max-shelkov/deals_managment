@@ -13,10 +13,9 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.gecko.dealsmanagment.DealsKeeper;
-import com.gecko.dealsmanagment.GeckoUtils;
 import com.gecko.dealsmanagment.R;
 
-import static com.gecko.dealsmanagment.GeckoUtils.formatedFloat;
+import static com.gecko.dealsmanagment.GeckoUtils.formattedInt;
 
 public class DashboardFragment extends Fragment {
 
@@ -46,8 +45,8 @@ public class DashboardFragment extends Fragment {
         dashboardViewModel.getDealsKeeper().observe(this, new Observer<DealsKeeper>() {
             @Override
             public void onChanged(DealsKeeper dealsKeeper) {
-                mVolumePriceTextView.setText("Vp:"+ formatedFloat(dealsKeeper.getCurrentVolumePrice()));
-                mVolumeRealTextView.setText("Vr:" + formatedFloat(dealsKeeper.getCurrentVolumeReal()));
+                mVolumePriceTextView.setText("Vp: "+ formattedInt(dealsKeeper.getCurrentVolumePrice()));
+                mVolumeRealTextView.setText("Vr: " + formattedInt(dealsKeeper.getCurrentVolumeReal()));
             }
         });
 

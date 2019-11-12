@@ -61,7 +61,7 @@ public class DealDetailsActivity extends AppCompatActivity implements SetMoneyDi
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
                 bundle.putString("tag", DIALOG_PAY_PLAN_TAG);
-                bundle.putFloat("money", mDeal.getToPay());
+                bundle.putInt("money", mDeal.getToPay());
                 bundle.putSerializable("date", mDeal.getPayPlanDate());
 
                 mDialogFragment.setArguments(bundle);
@@ -74,7 +74,7 @@ public class DealDetailsActivity extends AppCompatActivity implements SetMoneyDi
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
                 bundle.putString("tag", DIALOG_PAY_FACT_TAG);
-                bundle.putFloat("money", mDeal.getPaid());
+                bundle.putInt("money", mDeal.getPaid());
                 bundle.putSerializable("date", mDeal.getPayRealDate());
                 mDialogFragment.setArguments(bundle);
                 mDialogFragment.show(getSupportFragmentManager(), DIALOG_PAY_FACT_TAG);
@@ -102,7 +102,7 @@ public class DealDetailsActivity extends AppCompatActivity implements SetMoneyDi
     }
 
     @Override
-    public void onDialogFragmentDataEntered(float money, Calendar date, String tag) {
+    public void onDialogFragmentDataEntered(int money, Calendar date, String tag) {
         switch (tag){
             case DIALOG_PAY_PLAN_TAG:
                 mDeal.setToPay(money);
@@ -122,11 +122,11 @@ public class DealDetailsActivity extends AppCompatActivity implements SetMoneyDi
         mContractorTextView.setText(contractor);
         mStartDateTextView.setText(monthCalendarToString(mDeal.getStartMonth()));
         mFinishDateTextView.setText(monthCalendarToString(mDeal.getFinishMonth()));
-        mVolumePriceTextView.setText("Vп " + formatedFloat(mDeal.getPriceVolume()) + " руб.");
-        mVolumeRealTextView.setText("Vф " + formatedFloat(mDeal.getRealVolume())+ " руб.");
+        mVolumePriceTextView.setText("Vп " + formattedInt(mDeal.getPriceVolume()) + " руб.");
+        mVolumeRealTextView.setText("Vф " + formattedInt(mDeal.getRealVolume())+ " руб.");
         mToPayTextView = findViewById(R.id.to_pay_text_view);
-        mToPayTextView.setText(formatedFloat(mDeal.getToPay())+" руб.");
-        mPaidTextView.setText(formatedFloat(mDeal.getPaid())+" руб.");
+        mToPayTextView.setText(formattedInt(mDeal.getToPay())+" руб.");
+        mPaidTextView.setText(formattedInt(mDeal.getPaid())+" руб.");
         mToPayDateTextView.setText(dateCalendarToString(mDeal.getPayPlanDate()));
         mPaidDateTextView.setText(dateCalendarToString(mDeal.getPayRealDate()));
         mOwnerTextView.setText(mDeal.getOwner());

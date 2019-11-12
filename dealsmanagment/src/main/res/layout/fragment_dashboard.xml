@@ -22,29 +22,31 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
                 <com.google.android.material.card.MaterialCardView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:cardCornerRadius="8dp"
-                    android:layout_margin="8dp">
+                    android:layout_margin="8dp"
+                    android:layout_weight="1">
                 <TextView
                     android:id="@+id/current_price_volume_text_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="26sp"
+                    android:textSize="24sp"
                     android:textAlignment="center"
                     android:text="Vp:"
                     android:background="@color/color2GisGreenLight"/>
                 </com.google.android.material.card.MaterialCardView>
                 <com.google.android.material.card.MaterialCardView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:cardCornerRadius="8dp"
-                    android:layout_margin="8dp">
+                    android:layout_margin="8dp"
+                    android:layout_weight="1">
                     <TextView
                         android:id="@+id/current_real_volume_text_view"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="26sp"
+                        android:textSize="24sp"
                         android:textAlignment="center"
                         android:text="Vr:"
                         android:background="@color/color2GisGreenLight"/>
