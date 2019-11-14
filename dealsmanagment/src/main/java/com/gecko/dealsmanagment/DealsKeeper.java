@@ -205,7 +205,7 @@ public class DealsKeeper{
             if (mDeals.get(i).getStatus().equals(Deal.DEAL_STATUS_CURRENT)
                 ||mDeals.get(i).getStatus().equals(Deal.DEAL_STATUS_PROLONGATION)
                 ||mDeals.get(i).getStatus().equals(Deal.DEAL_STATUS_BREAK)
-                ||mDeals.get(i).getStatus().equals(Deal.DEAL_STATUS_EXCHANGE)){
+                ||mDeals.get(i).getStatus().equals(Deal.DEAL_STATUS_PREPROLONGATION)){
                 vol = vol + mDeals.get(i).getPriceVolume();
             }
         }
@@ -219,7 +219,7 @@ public class DealsKeeper{
             if (mDeals.get(i).getStatus().equals(Deal.DEAL_STATUS_CURRENT)
                     ||mDeals.get(i).getStatus().equals(Deal.DEAL_STATUS_PROLONGATION)
                     ||mDeals.get(i).getStatus().equals(Deal.DEAL_STATUS_BREAK)
-                    ||mDeals.get(i).getStatus().equals(Deal.DEAL_STATUS_EXCHANGE)){
+                    ||mDeals.get(i).getStatus().equals(Deal.DEAL_STATUS_PREPROLONGATION)){
                 x = mDeals.get(i).getRealVolume();
 
             }
@@ -229,6 +229,52 @@ public class DealsKeeper{
         }
         return vol;
 
+    }
+
+    public int getProlongationVolumePrice(){
+        int vol = 0;
+        for (int i = 0; i < mDeals.size(); i++) {
+            if (mDeals.get(i).getStatus().equals(Deal.DEAL_STATUS_PROLONGATION)){
+                vol+=mDeals.get(i).getPriceVolume();
+            }
+        }
+        return vol;
+    }
+
+    public int getProlongationVolumeReal(){
+        int vol = 0;
+        for (int i = 0; i < mDeals.size(); i++) {
+            if (mDeals.get(i).getStatus().equals(Deal.DEAL_STATUS_PROLONGATION)){
+                vol+=mDeals.get(i).getRealVolume();
+            }
+        }
+        return vol;
+    }
+
+    public int getUniqueClientsCount(){
+
+        ArrayList<String> uniqueNames = new ArrayList<>();
+        boolean found = false;
+        for (int i = 0; i < mDeals.size(); i++) {
+            found = false;
+            if(i==0){
+                uniqueNames.add(mDeals.get(i).getName());
+                found = true;
+            } else {
+                for (int j = 0; j < uniqueNames.size(); j++) {
+                    if (mDeals.get(i).getName().equals(uniqueNames.get(j))) {
+                        found = true;
+                    }
+                }
+            }
+            if(!found){
+                uniqueNames.add(mDeals.get(i).getName());
+            }
+        }
+        for (int i = 0; i < uniqueNames.size(); i++) {
+            Log.d(TAG, "#"+i+" name = " + uniqueNames.get(i));
+        }
+        return uniqueNames.size();
     }
 
     private String defineStatus(String status){
@@ -244,8 +290,6 @@ public class DealsKeeper{
             return Deal.DEAL_STATUS_PROLONGATION;
         } else if (status.equals("Регионалка")){
             return Deal.DEAL_STATUS_REGIONAL_OUT;
-        } else if(status.equals("Бартер")){
-            return Deal.DEAL_STATUS_EXCHANGE;
         } else {
             return "";
         }

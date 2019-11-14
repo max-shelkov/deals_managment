@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -25,6 +26,8 @@ public class DealDetailsActivity extends AppCompatActivity implements SetMoneyDi
 
     private TextView mCompanyNameTextView;
     private TextView mContractorTextView;
+    private TextView mAmountTextView;
+    private ProgressBar mPeriodProgressBar;
     private TextView mStartDateTextView;
     private TextView mFinishDateTextView;
     private TextView mVolumePriceTextView;
@@ -51,6 +54,9 @@ public class DealDetailsActivity extends AppCompatActivity implements SetMoneyDi
 
         mCompanyNameTextView = findViewById(R.id.company_name_text_view);
         mContractorTextView = findViewById(R.id.contractor_text_view);
+        mAmountTextView = findViewById(R.id.amount_text_view);
+        mPeriodProgressBar = findViewById(R.id.period_progress_bar);
+        mPeriodProgressBar.setMax(mDeal.getDuration());
         mStartDateTextView = findViewById(R.id.start_date_text_view);
         mFinishDateTextView = findViewById(R.id.finish_date_text_view);
         mVolumePriceTextView = findViewById(R.id.v_price_text_view);
@@ -120,8 +126,10 @@ public class DealDetailsActivity extends AppCompatActivity implements SetMoneyDi
         mCompanyNameTextView.setText(mDeal.getName());
         String contractor = "[" + mDeal.getContractor()+ "]";
         mContractorTextView.setText(contractor);
+        mAmountTextView.setText("сумма сделки "+formattedInt(mDeal.getAmount())+ " руб.");
         mStartDateTextView.setText(monthCalendarToString(mDeal.getStartMonth()));
         mFinishDateTextView.setText(monthCalendarToString(mDeal.getFinishMonth()));
+        mPeriodProgressBar.setProgress(monthsBetween(mDeal.getStartMonth(), Calendar.getInstance()));
         mVolumePriceTextView.setText("Vп " + formattedInt(mDeal.getPriceVolume()) + " руб.");
         mVolumeRealTextView.setText("Vф " + formattedInt(mDeal.getRealVolume())+ " руб.");
         mToPayTextView = findViewById(R.id.to_pay_text_view);

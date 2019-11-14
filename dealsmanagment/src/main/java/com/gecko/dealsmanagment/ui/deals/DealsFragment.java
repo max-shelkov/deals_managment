@@ -28,6 +28,7 @@ import com.gecko.dealsmanagment.DealsKeeper;
 import com.gecko.dealsmanagment.GeckoUtils;
 import com.gecko.dealsmanagment.R;
 
+import java.util.Calendar;
 import java.util.List;
 
 import static com.gecko.dealsmanagment.GeckoUtils.formattedInt;
@@ -89,7 +90,13 @@ public class DealsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "change mpp clicked");
-                mDealsViewModel.changeMPP();
+
+                Calendar c1 = Calendar.getInstance();
+                c1.set(2018, 11, 01);
+                Calendar c2 = Calendar.getInstance();
+                Log.d(TAG, "between c1 and c2 is " + GeckoUtils.monthsBetween(c1,c2) + " months");
+
+//                mDealsViewModel.changeMPP();
             }
         });
 

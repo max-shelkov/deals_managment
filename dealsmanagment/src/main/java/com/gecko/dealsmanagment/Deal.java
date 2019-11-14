@@ -15,14 +15,17 @@ public class Deal implements Serializable {
     public static final String DEAL_STATUS_REGIONAL_IN = "regional_in_deal";
     public static final String DEAL_STATUS_OVERSELL = "oversell_deal";
     public static final String DEAL_STATUS_PROLONGATION = "prolongation_deal";
-    public static final String DEAL_STATUS_EXCHANGE = "exchange_deal";
+    public static final String DEAL_STATUS_PREPROLONGATION = "preprolongation_deal";
 
+    public static final String DEAL_TYPE_SELL = "type_sell";
+    public static final String DEAL_TYPE_EXCHANGE = "type_exchange";
 
     private UUID mId;           //1
     private String mOwner;      //2
     private String mName;       //3
     private String mContractor; //4
     private String mStatus;     //5
+    private String mType;
     private int mAmount;      //6
     private int mPriceVolume; //7
     private int mRealVolume;  //8
@@ -35,7 +38,9 @@ public class Deal implements Serializable {
     private Calendar mStartMonth;   //15
     private Calendar mFinishMonth;  //16
     private int mDuration;    //17
+    private Deal mProlongationDeal;
     private String mNote;
+
 //    private boolean mCleared;
 
 
@@ -89,6 +94,10 @@ public class Deal implements Serializable {
         if (mFinishMonth.get(Calendar.YEAR) == Calendar.getInstance().get(Calendar.YEAR)&&
                 mFinishMonth.get(Calendar.MONTH) == Calendar.getInstance().get(Calendar.MONTH)){
             mStatus = DEAL_STATUS_PROLONGATION;
+        }
+        if (mFinishMonth.get(Calendar.YEAR) == Calendar.getInstance().get(Calendar.YEAR)&&
+                (mFinishMonth.get(Calendar.MONTH)-1) == Calendar.getInstance().get(Calendar.MONTH)){
+            mStatus = DEAL_STATUS_PREPROLONGATION;
         }
     }
 
@@ -203,5 +212,31 @@ public class Deal implements Serializable {
 
     public void setNote(String note) {
         mNote = note;
+    }
+
+    public boolean isProlonged(){
+        if(mProlongationDeal == null){
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public Deal getProlongationDeal() {
+        return mProlongationDeal;
+    }
+
+    public void setProlongationDeal(Deal prolongationDeal) {
+        mProlongationDeal = prolongationDeal;
+    }
+
+    public int getAmount() {
+        return mAmount;
+    }
+
+    public int monthsLeft(){
+        int x = (mFinishMonth.compareTo(mStartMonth))/30;
+
+        return x;
     }
 }

@@ -1,8 +1,13 @@
 package com.gecko.dealsmanagment;
 
+import android.util.Log;
+
 import java.util.Calendar;
 
 public class GeckoUtils {
+
+    private static final String TAG = "myLog";
+
     public static String dateCalendarToString(Calendar date){
         if (date == null) return "no date";
         StringBuilder sb = new StringBuilder();
@@ -94,4 +99,23 @@ public class GeckoUtils {
         }
         return res;
     }
+
+    public static int monthsBetween(Calendar start, Calendar finish){
+        Calendar current = Calendar.getInstance();
+        int months = 0;
+        Log.d(TAG, "finish month = " + finish.get(Calendar.MONTH) + " start month = " +start.get(Calendar.MONTH));
+        if (start.get(Calendar.YEAR) == finish.get(Calendar.YEAR)){
+            months = finish.get(Calendar.MONTH) - start.get(Calendar.MONTH) +1;
+        }
+
+        if (start.get(Calendar.YEAR) < finish.get(Calendar.YEAR)){
+            int x = (finish.get(Calendar.YEAR) - start.get(Calendar.YEAR)) * 12;
+            int p1 = (x - start.get(Calendar.MONTH));
+            int p2 = (finish.get(Calendar.MONTH)+1);
+            Log.d(TAG, "p1 = " + p1 + " p2 = " + p2);
+            months = p1+p2;
+        }
+        return months;
+    }
+
 }

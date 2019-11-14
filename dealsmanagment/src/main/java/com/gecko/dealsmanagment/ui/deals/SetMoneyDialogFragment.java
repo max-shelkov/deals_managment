@@ -82,10 +82,6 @@ public class SetMoneyDialogFragment extends DialogFragment implements View.OnCli
                     }else if(mDateEditText.getText().toString().equals("0")){
                         mDateOfPayment = null;
                     } else {
-/*
-                        mDateOfPayment = Calendar.getInstance();
-                        mDateOfPayment.set(Calendar.DAY_OF_MONTH, Integer.parseInt(mDateEditText.getText().toString()));
-*/
                         Calendar currentDate = Calendar.getInstance();
                         Calendar enteredDate = Calendar.getInstance();
                         enteredDate.set(Calendar.DAY_OF_MONTH, Integer.parseInt(mDateEditText.getText().toString()));
