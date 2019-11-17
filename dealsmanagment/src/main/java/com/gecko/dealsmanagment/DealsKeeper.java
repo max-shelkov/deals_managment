@@ -168,6 +168,14 @@ public class DealsKeeper{
         return mDeals;
     }
 
+    public String[] findMppFromDeals(){
+        Set<String> mppSet = new HashSet<>();
+        for (int i = 0; i < mDeals.size(); i++) {
+            mppSet.add(mDeals.get(i).getOwner());
+        }
+        return mppSet.toArray(new String[0]);
+    }
+
 
 
     public void serializeDeals(){

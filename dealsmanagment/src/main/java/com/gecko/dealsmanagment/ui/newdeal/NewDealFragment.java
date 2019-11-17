@@ -22,6 +22,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -31,6 +32,7 @@ import com.gecko.dealsmanagment.GeckoUtils;
 import com.gecko.dealsmanagment.InputDataDialog;
 import com.gecko.dealsmanagment.MainActivity;
 import com.gecko.dealsmanagment.R;
+import com.gecko.dealsmanagment.ui.InputOwnerDialog;
 
 import java.util.Calendar;
 
@@ -41,6 +43,7 @@ public class NewDealFragment extends Fragment {
     private static final int REQUEST_CODE_DURATION = 100;
     private static final int REQUEST_CODE_VOLUME_PRICE = 101;
     private static final int REQUEST_CODE_VOLUME_REAL = 102;
+    private static final int REQUEST_CODE_OWNER = 103;
 
     private Context mMainActivityCtx;
     private Fragment mFragmentCtx;
@@ -52,6 +55,7 @@ public class NewDealFragment extends Fragment {
     private TextView mDurationTextView;
     private TextView mVolumePriceTextView;
     private TextView mVolumeRealTextView;
+    private TextView mOwnerTextView;
     private Button mOkButton;
 
     private DialogFragment mInputDataDialog;
@@ -103,6 +107,21 @@ public class NewDealFragment extends Fragment {
             }
         });
         mFinishDateTextView = root.findViewById(R.id.finish_date_new_deal_text_view);
+        mOwnerTextView = root.findViewById(R.id.owner_new_deal_text_view);
+        mOwnerTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager manager = getFragmentManager();
+                InputOwnerDialog iod  = new InputOwnerDialog();
+                iod.setTargetFragment(mFragmentCtx, REQUEST_CODE_OWNER);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("managers", mNewDealViewModel.findManagersFromDeals());
+                iod.setArguments(bundle);
+                iod.show(manager, "1010");
+
+            }
+        });
+
         mOkButton = root.findViewById(R.id.new_deal_ok_button);
         mOkButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -186,6 +205,7 @@ public class NewDealFragment extends Fragment {
 
         mVolumePriceTextView.setText("Vp: " + formattedInt(d.getPriceVolume()));
         mVolumeRealTextView.setText("Vr: " + formattedInt(d.getRealVolume()));
+        mOwnerTextView.setText(d.getOwner());
     }
 
     private void setDate(View v){
@@ -248,6 +268,11 @@ public class NewDealFragment extends Fragment {
                     String stringDuration = data.getStringExtra("data");
                     int duration = Integer.parseInt(stringDuration);
                     mNewDealViewModel.setDuration((short)duration);
+                    break;
+                case REQUEST_CODE_OWNER:
+                    String owner = data.getStringExtra("manager");
+                    Toast.makeText(getActivity(), owner, Toast.LENGTH_SHORT).show();
+                    mNewDealViewModel.setOwner(owner);
                     break;
             }
 

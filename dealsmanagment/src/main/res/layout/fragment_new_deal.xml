@@ -81,6 +81,7 @@
     <TextView
         android:id="@+id/owner_new_deal_text_view"
         style="@style/NewDealTextView"
+        android:layout_weight="0"
         android:text="owner"/>
 
     <Button

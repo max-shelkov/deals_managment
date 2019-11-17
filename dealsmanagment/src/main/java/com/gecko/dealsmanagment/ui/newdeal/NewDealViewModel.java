@@ -39,12 +39,14 @@ public class NewDealViewModel extends ViewModel {
         return mText;
     }
 
-
-
     public void addDeal(Deal d){
         mDealsKeeper.getValue().addDeal(d);
         mDealsKeeper.getValue().serializeDeals();
         mDealsKeeper.setValue(mDealsKeeper.getValue());
+    }
+
+    public String[] findManagersFromDeals(){
+        return  mDealsKeeper.getValue().findMppFromDeals();
     }
 
     public String findContractor(String name){
@@ -90,6 +92,11 @@ public class NewDealViewModel extends ViewModel {
 
     public void setRealVolume(int v){
         mNewDeal.getValue().setRealVolume(v);
+        mNewDeal.setValue(mNewDeal.getValue());
+    }
+
+    public void setOwner(String s){
+        mNewDeal.getValue().setOwner(s);
         mNewDeal.setValue(mNewDeal.getValue());
     }
 
