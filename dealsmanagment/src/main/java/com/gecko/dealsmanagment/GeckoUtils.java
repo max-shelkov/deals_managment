@@ -6,7 +6,7 @@ import java.util.Calendar;
 
 public class GeckoUtils {
 
-    private static final String TAG = "myLog";
+    public static final String TAG = "myLog";
 
     public static String dateCalendarToString(Calendar date){
         if (date == null) return "no date";
@@ -64,8 +64,9 @@ public class GeckoUtils {
         int rub = num / 100;
         int kop = num % 100;
         StringBuilder sb = new StringBuilder();
-        sb.append(rub).append(",").append(kop);
-        if (kop == 0) sb.append("0");
+        sb.append(rub).append(",");
+        if (kop >= 0 && kop <= 9) sb.append("0");
+        sb.append(kop);
 
         int index = sb.toString().length();
         index = index-6;
@@ -74,9 +75,14 @@ public class GeckoUtils {
             sb.insert(index, " ");
             index -=3;
         }
-
-
         return sb.toString();
+    }
+
+    public static String intToMoneyString(int sum){
+
+
+
+        return null;
     }
 
     public static int msXlsCellToInt(String strNum){

@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.Calendar;
 import java.util.UUID;
 
-public class Deal implements Serializable {
+public class Deal implements Serializable{
 
     public static final String DEAL_STATUS_NEW = "new_deal";
     public static final String DEAL_STATUS_CURRENT = "current_deal";
@@ -67,6 +67,14 @@ public class Deal implements Serializable {
         mFinishMonth = mStartMonth+mDuration-1;
     }
 */
+
+    public Deal(){
+        mId = UUID.randomUUID();
+
+        mStartMonth = Calendar.getInstance();
+        mStartMonth.add(Calendar.MONTH, 1);
+        mStartMonth.set(Calendar.DAY_OF_MONTH,1);
+    }
 
     public Deal(String owner, String name, String contractor, String status,
                 int priceVolume, int realVolume, Calendar startMonth, int duration) {
@@ -186,8 +194,15 @@ public class Deal implements Serializable {
 
     public void setDuration(short duration) {
         mDuration = duration;
-        mFinishMonth = mStartMonth;
-        mFinishMonth.add(Calendar.MONTH, duration);
+        if (duration > 0) {
+            if (mStartMonth != null) {
+                mFinishMonth = Calendar.getInstance();
+                mFinishMonth.set(mStartMonth.get(Calendar.YEAR), mStartMonth.get(Calendar.MONTH), mStartMonth.get(Calendar.DAY_OF_MONTH));
+                mFinishMonth.add(Calendar.MONTH, duration);
+            }
+        } else {
+            mFinishMonth = null;
+        }
     }
 
     public Calendar getStartMonth() {
@@ -238,5 +253,16 @@ public class Deal implements Serializable {
         int x = (mFinishMonth.compareTo(mStartMonth))/30;
 
         return x;
+    }
+    public void setContractor(String contractor) {
+        mContractor = contractor;
+    }
+
+    public void setPriceVolume(int priceVolume) {
+        mPriceVolume = priceVolume;
+    }
+
+    public void setRealVolume(int realVolume) {
+        mRealVolume = realVolume;
     }
 }

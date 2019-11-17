@@ -13,4 +13,5 @@
     <string name="dashboard_header_current_volume">текущий объем</string>
     <string name="dashboard_header_prolongation">объем к продлению</string>
     <string name="dashboard_header_unique_clients_count">число уникальных клиентов в выпуске</string>
+    <string name="new_deal_firm_name">название фирмы</string>
 </resources>

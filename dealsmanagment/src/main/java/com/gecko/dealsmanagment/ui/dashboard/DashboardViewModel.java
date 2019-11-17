@@ -19,11 +19,6 @@ public class DashboardViewModel extends ViewModel {
 
     }
 
-    public int getCurrentVolumePrice(){
-        return mDealsKeeper.getValue().getCurrentVolumePrice();
-    }
-
-
 
     public MutableLiveData<DealsKeeper> getDealsKeeper(){
         return mDealsKeeper;

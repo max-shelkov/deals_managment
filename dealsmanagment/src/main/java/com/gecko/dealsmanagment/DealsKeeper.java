@@ -6,6 +6,8 @@ import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
 
+import androidx.annotation.Nullable;
+
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.ss.usermodel.Cell;
@@ -21,8 +23,11 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static com.gecko.dealsmanagment.GeckoUtils.msXlsCellToInt;
 import static com.gecko.dealsmanagment.GeckoUtils.msXlsDateToCalendar;
@@ -47,6 +52,10 @@ public class DealsKeeper{
 
     public void setDeals(List<Deal> deals) {
         mDeals = deals;
+    }
+
+    public void addDeal(Deal d){
+        mDeals.add(d);
     }
 
     public void printDealsToLog(){
@@ -294,4 +303,23 @@ public class DealsKeeper{
             return "";
         }
     }
+
+
+    public String[] getNames(){
+        Set<String> nSet = new HashSet<>();
+        for (int i = 0; i < mDeals.size(); i++) {
+            nSet.add(mDeals.get(i).getName());
+        }
+        return nSet.toArray(new String[0]);
+    }
+
+    public String findContractorByFirmName(String name){
+        for (Deal d: mDeals) {
+            if (d.getName().equals(name)){
+                return d.getContractor();
+            }
+        }
+        return null;
+    }
+
 }
