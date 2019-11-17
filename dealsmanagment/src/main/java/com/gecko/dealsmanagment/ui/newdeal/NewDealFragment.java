@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +14,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,17 +44,21 @@ public class NewDealFragment extends Fragment {
     private static final int REQUEST_CODE_VOLUME_PRICE = 101;
     private static final int REQUEST_CODE_VOLUME_REAL = 102;
     private static final int REQUEST_CODE_OWNER = 103;
+    private static final int REQUEST_CODE_SUM_TO_PAY = 104;
 
     private Context mMainActivityCtx;
     private Fragment mFragmentCtx;
 
+    private LinearLayout mRootLinearLayout;
     private AutoCompleteTextView mNameTextView;
-    private TextView mContractorTextView;
+    private EditText mContractorEditText;
     private TextView mStartDateTextView;
     private TextView mFinishDateTextView;
     private TextView mDurationTextView;
     private TextView mVolumePriceTextView;
     private TextView mVolumeRealTextView;
+    private TextView mSumToPayTextView;
+    private TextView mPlanPaymentDateTextView;
     private TextView mOwnerTextView;
     private Button mOkButton;
 
@@ -75,8 +79,25 @@ public class NewDealFragment extends Fragment {
 
         View root = inflater.inflate(R.layout.fragment_new_deal, container, false);
         final TextView textView = root.findViewById(R.id.text_notifications);
+        mRootLinearLayout = root.findViewById(R.id.root_linear_layout_new_deal);
         mNameTextView = root.findViewById(R.id.name_text_view);
-        mContractorTextView = root.findViewById(R.id.contractor_text_view);
+        mNameTextView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus){
+                    mNewDealViewModel.setFirmName(((AutoCompleteTextView)v).getText().toString());
+                }
+            }
+        });
+        mContractorEditText = root.findViewById(R.id.contractor_edit_text);
+        mContractorEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    mNewDealViewModel.setContractor(mContractorEditText.getText().toString());
+                }
+            }
+        });
         mStartDateTextView = root.findViewById(R.id.start_date_new_deal_text_view);
         mStartDateTextView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,6 +128,20 @@ public class NewDealFragment extends Fragment {
             }
         });
         mFinishDateTextView = root.findViewById(R.id.finish_date_new_deal_text_view);
+        mSumToPayTextView = root.findViewById(R.id.to_pay_new_deal_text_view);
+        mSumToPayTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startInputDataDialog("к оплате в текущем месяце", REQUEST_CODE_SUM_TO_PAY);
+            }
+        });
+        mPlanPaymentDateTextView = root.findViewById(R.id.payment_date_plan_new_deal_text_view);
+        mPlanPaymentDateTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setDate(v);
+            }
+        });
         mOwnerTextView = root.findViewById(R.id.owner_new_deal_text_view);
         mOwnerTextView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -180,15 +215,16 @@ public class NewDealFragment extends Fragment {
     }
 
     private void showDeal(Deal d) {
+        Log.d(TAG, "showDeal called");
         if (d.getName()!=null) {
             mNameTextView.setText(d.getName());
         } else {
             mNameTextView.setText("");
         }
         if (d.getContractor() != null) {
-            mContractorTextView.setText("[" + d.getContractor() + "]");
+            mContractorEditText.setText(d.getContractor(), TextView.BufferType.EDITABLE);
         } else {
-            mContractorTextView.setText("");
+            mContractorEditText.setText("");
         }
         if (d.getStartMonth() != null){
             mStartDateTextView.setText(monthCalendarToString(d.getStartMonth()));
@@ -202,32 +238,56 @@ public class NewDealFragment extends Fragment {
         } else {
             mFinishDateTextView.setText("no date");
         }
-
+        mSumToPayTextView.setText(formattedInt(d.getToPay()));
         mVolumePriceTextView.setText("Vp: " + formattedInt(d.getPriceVolume()));
         mVolumeRealTextView.setText("Vr: " + formattedInt(d.getRealVolume()));
-        mOwnerTextView.setText(d.getOwner());
+        if(d.getPayPlanDate() != null){
+            mPlanPaymentDateTextView.setText(dateCalendarToString(d.getPayPlanDate()));
+        } else {
+            mPlanPaymentDateTextView.setText("no date");
+        }
+
+        if (d.getOwner()==null || d.getOwner().equals("")){
+            mOwnerTextView.setText("куратор не указан");
+        } else {
+            mOwnerTextView.setText(d.getOwner());
+        }
+
+        mRootLinearLayout.requestFocus();
     }
 
     private void setDate(View v){
-        Calendar nextMonth = Calendar.getInstance();
-        nextMonth.add(Calendar.MONTH,1);
-        nextMonth.set(Calendar.DAY_OF_MONTH, 1);
-        new DatePickerDialog(getActivity(), d,
-                nextMonth.get(Calendar.YEAR),
-                nextMonth.get(Calendar.MONTH),
-                nextMonth.get(Calendar.DAY_OF_MONTH))
+        final View clickedView = v;
+        DatePickerDialog.OnDateSetListener setDateListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                Calendar date = Calendar.getInstance();
+                date.set(year, month, dayOfMonth);
+                if (clickedView.getId() == mStartDateTextView.getId()) mNewDealViewModel.setStartDate(date);
+                if (clickedView.getId() == mPlanPaymentDateTextView.getId()) mNewDealViewModel.setPaymentDate(date);
+            }
+        };
+
+        Calendar openDate = Calendar.getInstance();
+        if (clickedView.getId() == mStartDateTextView.getId()) {
+            openDate.add(Calendar.MONTH,1);
+            openDate.set(Calendar.DAY_OF_MONTH, 1);
+        }
+
+
+        new DatePickerDialog(getActivity(), setDateListener,
+                openDate.get(Calendar.YEAR),
+                openDate.get(Calendar.MONTH),
+                openDate.get(Calendar.DAY_OF_MONTH))
                 .show();
+
+
+
+
     }
 
 
 
-    DatePickerDialog.OnDateSetListener d = new DatePickerDialog.OnDateSetListener() {
-        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-            Calendar startDate = Calendar.getInstance();
-            startDate.set(year, monthOfYear, dayOfMonth);
-            mNewDealViewModel.setStartDate(startDate);
-        }
-    };
 
 
     private boolean checkEnteredData() {
@@ -271,8 +331,13 @@ public class NewDealFragment extends Fragment {
                     break;
                 case REQUEST_CODE_OWNER:
                     String owner = data.getStringExtra("manager");
-                    Toast.makeText(getActivity(), owner, Toast.LENGTH_SHORT).show();
                     mNewDealViewModel.setOwner(owner);
+                    break;
+                case REQUEST_CODE_SUM_TO_PAY:
+                    String stringSum = data.getStringExtra("data");
+                    Toast.makeText(getActivity(), stringSum, Toast.LENGTH_SHORT).show();
+                    int sumToPay = GeckoUtils.msXlsCellToInt(stringSum);
+                    mNewDealViewModel.setSumToPay(sumToPay);
                     break;
             }
 

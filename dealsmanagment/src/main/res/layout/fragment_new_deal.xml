@@ -2,10 +2,13 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root_linear_layout_new_deal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/color2GisBlueLight">
+    android:background="@color/color2GisBlueLight"
+    android:focusableInTouchMode="true"
+    android:focusable="true">
 
     <TextView
         android:id="@+id/text_notifications"
@@ -29,16 +32,17 @@
         />
 
     <EditText
-        android:id="@+id/contractor_text_view"
+        android:id="@+id/contractor_edit_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="center"
-        />
+        android:hint="Юр.лицо заказчика"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginTop="12dp">
         <TextView
             android:id="@+id/start_date_new_deal_text_view"
             android:layout_width="match_parent"
@@ -67,7 +71,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginTop="12dp">
         <TextView
             android:id="@+id/volume_price_new_deal_text_view"
             android:text="V price"
@@ -76,7 +81,21 @@
             android:id="@+id/volume_real_new_deal_text_view"
             android:text="V real"
             style="@style/NewDealTextView"/>
-        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="12dp">
+        <TextView
+            android:id="@+id/to_pay_new_deal_text_view"
+            android:text="sum to pay"
+            style="@style/NewDealTextView"/>
+        <TextView
+            android:id="@+id/payment_date_plan_new_deal_text_view"
+            android:text="date to pay"
+            style="@style/NewDealTextView"/>
+    </LinearLayout>
 
     <TextView
         android:id="@+id/owner_new_deal_text_view"

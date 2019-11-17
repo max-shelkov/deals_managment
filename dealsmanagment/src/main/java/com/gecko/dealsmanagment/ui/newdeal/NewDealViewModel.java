@@ -100,4 +100,14 @@ public class NewDealViewModel extends ViewModel {
         mNewDeal.setValue(mNewDeal.getValue());
     }
 
+    public void setSumToPay(int sum){
+        mNewDeal.getValue().setToPay(sum);
+        mNewDeal.setValue(mNewDeal.getValue());
+    }
+
+    public void setPaymentDate(Calendar date){
+        mNewDeal.getValue().setPayPlanDate(date);
+        mNewDeal.setValue(mNewDeal.getValue());
+    }
+
 }

@@ -194,15 +194,7 @@ public class Deal implements Serializable{
 
     public void setDuration(short duration) {
         mDuration = duration;
-        if (duration > 0) {
-            if (mStartMonth != null) {
-                mFinishMonth = Calendar.getInstance();
-                mFinishMonth.set(mStartMonth.get(Calendar.YEAR), mStartMonth.get(Calendar.MONTH), mStartMonth.get(Calendar.DAY_OF_MONTH));
-                mFinishMonth.add(Calendar.MONTH, duration);
-            }
-        } else {
-            mFinishMonth = null;
-        }
+        mFinishMonth = calculateFinishMonth(mStartMonth, mDuration);
     }
 
     public Calendar getStartMonth() {
@@ -211,6 +203,19 @@ public class Deal implements Serializable{
 
     public void setStartMonth(Calendar startMonth) {
         mStartMonth = startMonth;
+        mFinishMonth = calculateFinishMonth(mStartMonth, mDuration);
+    }
+
+    private Calendar calculateFinishMonth(Calendar startMonth, int duration){
+        Calendar finishMonth;
+        if(startMonth!=null && duration>0){
+            finishMonth = Calendar.getInstance();
+            finishMonth.set(startMonth.get(Calendar.YEAR), startMonth.get(Calendar.MONTH), startMonth.get(Calendar.DAY_OF_MONTH));
+            finishMonth.add(Calendar.MONTH, duration-1);
+        } else {
+            finishMonth = null;
+        }
+        return finishMonth;
     }
 
     public Calendar getFinishMonth() {
