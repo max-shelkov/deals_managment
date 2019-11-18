@@ -53,7 +53,7 @@ public class DealDetailsActivity extends AppCompatActivity implements SetMoneyDi
         mDialogFragment = new SetMoneyDialogFragment();
 
         mCompanyNameTextView = findViewById(R.id.company_name_text_view);
-        mContractorTextView = findViewById(R.id.contractor_edit_text);
+        mContractorTextView = findViewById(R.id.contractor_text_view_new_deal);
         mAmountTextView = findViewById(R.id.amount_text_view);
         mPeriodProgressBar = findViewById(R.id.period_progress_bar);
         mPeriodProgressBar.setMax(mDeal.getDuration());

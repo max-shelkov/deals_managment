@@ -4,6 +4,8 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,11 +14,12 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
@@ -51,7 +54,9 @@ public class NewDealFragment extends Fragment {
 
     private LinearLayout mRootLinearLayout;
     private AutoCompleteTextView mNameTextView;
-    private EditText mContractorEditText;
+    private ToggleButton mNameToggleButton;
+    private AutoCompleteTextView mContractorTextView;
+    private ToggleButton mContractorToggleButton;
     private TextView mStartDateTextView;
     private TextView mFinishDateTextView;
     private TextView mDurationTextView;
@@ -80,21 +85,33 @@ public class NewDealFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_new_deal, container, false);
         final TextView textView = root.findViewById(R.id.text_notifications);
         mRootLinearLayout = root.findViewById(R.id.root_linear_layout_new_deal);
-        mNameTextView = root.findViewById(R.id.name_text_view);
-        mNameTextView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        mNameTextView = root.findViewById(R.id.name_text_view_new_deal);
+        mNameToggleButton = root.findViewById(R.id.firm_name_toggle_button_new_deal);
+        mNameToggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus){
-                    mNewDealViewModel.setFirmName(((AutoCompleteTextView)v).getText().toString());
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                mNameTextView.setEnabled(isChecked);
+                if (!isChecked){
+                    String name = mNameTextView.getText().toString();
+                    String contractor = mContractorTextView.getText().toString();
+                    mNewDealViewModel.setFirmName(name);
+                    mContractorTextView.setText(contractor);
+                    mRootLinearLayout.requestFocus();
                 }
             }
         });
-        mContractorEditText = root.findViewById(R.id.contractor_edit_text);
-        mContractorEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        mContractorTextView = root.findViewById(R.id.contractor_text_view_new_deal);
+        mContractorToggleButton = root.findViewById(R.id.contractor_toggle_button_new_deal);
+        mContractorToggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    mNewDealViewModel.setContractor(mContractorEditText.getText().toString());
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                mContractorTextView.setEnabled(isChecked);
+                if (!isChecked){
+                    String name = mNameTextView.getText().toString();
+                    String contractor = mContractorTextView.getText().toString();
+                    mNewDealViewModel.setContractor(contractor);
+                    mNameTextView.setText(name);
+                    mRootLinearLayout.requestFocus();
                 }
             }
         });
@@ -162,7 +179,6 @@ public class NewDealFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 mNewDealViewModel.addNewDealToKeeper();
-
             }
         });
 
@@ -216,16 +232,20 @@ public class NewDealFragment extends Fragment {
 
     private void showDeal(Deal d) {
         Log.d(TAG, "showDeal called");
-        if (d.getName()!=null) {
+
+        if (d.getName() != null) {
             mNameTextView.setText(d.getName());
         } else {
             mNameTextView.setText("");
         }
+
         if (d.getContractor() != null) {
-            mContractorEditText.setText(d.getContractor(), TextView.BufferType.EDITABLE);
+            mContractorTextView.setText(d.getContractor(), TextView.BufferType.EDITABLE);
         } else {
-            mContractorEditText.setText("");
+            mContractorTextView.setText("", TextView.BufferType.EDITABLE);
         }
+
+
         if (d.getStartMonth() != null){
             mStartDateTextView.setText(monthCalendarToString(d.getStartMonth()));
         } else {
@@ -253,7 +273,7 @@ public class NewDealFragment extends Fragment {
             mOwnerTextView.setText(d.getOwner());
         }
 
-        mRootLinearLayout.requestFocus();
+
     }
 
     private void setDate(View v){
