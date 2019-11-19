@@ -1,0 +1,2 @@
+include ':app', ':dealsmanagment', ':tryopendocument'
+rootProject.name='YogaGuide'
