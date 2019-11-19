@@ -4,8 +4,6 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,11 +46,15 @@ public class NewDealFragment extends Fragment {
     private static final int REQUEST_CODE_VOLUME_REAL = 102;
     private static final int REQUEST_CODE_OWNER = 103;
     private static final int REQUEST_CODE_SUM_TO_PAY = 104;
+    private static final int REQUEST_CODE_DEAL_TYPE = 105;
+    private static final int REQUEST_CODE_DEAL_STATUS = 106;
 
     private Context mMainActivityCtx;
     private Fragment mFragmentCtx;
 
     private LinearLayout mRootLinearLayout;
+    private TextView mTypeTextView;
+    private TextView mStatusTextView;
     private AutoCompleteTextView mNameTextView;
     private ToggleButton mNameToggleButton;
     private AutoCompleteTextView mContractorTextView;
@@ -83,8 +85,35 @@ public class NewDealFragment extends Fragment {
         mInputDataDialog = new InputDataDialog();
 
         View root = inflater.inflate(R.layout.fragment_new_deal, container, false);
-        final TextView textView = root.findViewById(R.id.text_notifications);
         mRootLinearLayout = root.findViewById(R.id.root_linear_layout_new_deal);
+        mTypeTextView = root.findViewById(R.id.type_new_deal_text_view);
+        mTypeTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager manager = getFragmentManager();
+                InputOwnerDialog iod  = new InputOwnerDialog();
+                iod.setTargetFragment(mFragmentCtx, REQUEST_CODE_DEAL_TYPE);
+                Bundle bundle = new Bundle();
+                bundle.putString("title", "тип сделки");
+                bundle.putSerializable("array", Deal.DEAL_TYPES);
+                iod.setArguments(bundle);
+                iod.show(manager, "not_used_tag");
+            }
+        });
+        mStatusTextView = root.findViewById(R.id.status_new_deal_text_view);
+        mStatusTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager manager = getFragmentManager();
+                InputOwnerDialog iod  = new InputOwnerDialog();
+                iod.setTargetFragment(mFragmentCtx, REQUEST_CODE_DEAL_STATUS);
+                Bundle bundle = new Bundle();
+                bundle.putString("title", "тип сделки");
+                bundle.putSerializable("array", Deal.DEAL_STATUSES);
+                iod.setArguments(bundle);
+                iod.show(manager, "not_used_tag");
+            }
+        });
         mNameTextView = root.findViewById(R.id.name_text_view_new_deal);
         mNameToggleButton = root.findViewById(R.id.firm_name_toggle_button_new_deal);
         mNameToggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -167,10 +196,10 @@ public class NewDealFragment extends Fragment {
                 InputOwnerDialog iod  = new InputOwnerDialog();
                 iod.setTargetFragment(mFragmentCtx, REQUEST_CODE_OWNER);
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("managers", mNewDealViewModel.findManagersFromDeals());
+                bundle.putString("title", "куратор сделки");
+                bundle.putSerializable("array", mNewDealViewModel.findManagersFromDeals());
                 iod.setArguments(bundle);
-                iod.show(manager, "1010");
-
+                iod.show(manager, "not_used_tag");
             }
         });
 
@@ -207,13 +236,6 @@ public class NewDealFragment extends Fragment {
             }
         });
 
-        mNewDealViewModel.getText().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
-
         mNewDealViewModel.getDealsKeeper().observe(this, new Observer<DealsKeeper>() {
             @Override
             public void onChanged(DealsKeeper dealsKeeper) {
@@ -233,6 +255,18 @@ public class NewDealFragment extends Fragment {
     private void showDeal(Deal d) {
         Log.d(TAG, "showDeal called");
 
+        if (d.getType()!=null){
+            mTypeTextView.setText(d.getType());
+        } else {
+            mTypeTextView.setHint("deal's type");
+        }
+
+        if (d.getStatus()!=null){
+            mStatusTextView.setText(d.getStatus());
+        } else {
+            mStatusTextView.setHint("deal's status");
+        }
+
         if (d.getName() != null) {
             mNameTextView.setText(d.getName());
         } else {
@@ -244,7 +278,6 @@ public class NewDealFragment extends Fragment {
         } else {
             mContractorTextView.setText("", TextView.BufferType.EDITABLE);
         }
-
 
         if (d.getStartMonth() != null){
             mStartDateTextView.setText(monthCalendarToString(d.getStartMonth()));
@@ -294,16 +327,11 @@ public class NewDealFragment extends Fragment {
             openDate.set(Calendar.DAY_OF_MONTH, 1);
         }
 
-
         new DatePickerDialog(getActivity(), setDateListener,
                 openDate.get(Calendar.YEAR),
                 openDate.get(Calendar.MONTH),
                 openDate.get(Calendar.DAY_OF_MONTH))
                 .show();
-
-
-
-
     }
 
 
@@ -350,7 +378,7 @@ public class NewDealFragment extends Fragment {
                     mNewDealViewModel.setDuration((short)duration);
                     break;
                 case REQUEST_CODE_OWNER:
-                    String owner = data.getStringExtra("manager");
+                    String owner = data.getStringExtra("data");
                     mNewDealViewModel.setOwner(owner);
                     break;
                 case REQUEST_CODE_SUM_TO_PAY:
@@ -358,6 +386,14 @@ public class NewDealFragment extends Fragment {
                     Toast.makeText(getActivity(), stringSum, Toast.LENGTH_SHORT).show();
                     int sumToPay = GeckoUtils.msXlsCellToInt(stringSum);
                     mNewDealViewModel.setSumToPay(sumToPay);
+                    break;
+                case REQUEST_CODE_DEAL_TYPE:
+                    String type = data.getStringExtra("data");
+                    mNewDealViewModel.setType(type);
+                    break;
+                case REQUEST_CODE_DEAL_STATUS:
+                    String status = data.getStringExtra("data");
+                    mNewDealViewModel.setStatus(status);
                     break;
             }
 

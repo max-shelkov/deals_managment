@@ -11,13 +11,11 @@ import java.util.Calendar;
 
 public class NewDealViewModel extends ViewModel {
 
-    private MutableLiveData<String> mText;
+
     private MutableLiveData<DealsKeeper> mDealsKeeper;
     private MutableLiveData<Deal> mNewDeal;
 
     public NewDealViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is notifications fragment");
 
         mDealsKeeper = new MutableLiveData<>();
         mDealsKeeper.setValue(new DealsKeeper());
@@ -35,15 +33,13 @@ public class NewDealViewModel extends ViewModel {
         return mDealsKeeper;
     }
 
-    public LiveData<String> getText() {
-        return mText;
-    }
-
+/*
     public void addDeal(Deal d){
         mDealsKeeper.getValue().addDeal(d);
         mDealsKeeper.getValue().serializeDeals();
         mDealsKeeper.setValue(mDealsKeeper.getValue());
     }
+*/
 
     public String[] findManagersFromDeals(){
         return  mDealsKeeper.getValue().findMppFromDeals();
@@ -107,6 +103,16 @@ public class NewDealViewModel extends ViewModel {
 
     public void setPaymentDate(Calendar date){
         mNewDeal.getValue().setPayPlanDate(date);
+        mNewDeal.setValue(mNewDeal.getValue());
+    }
+
+    public void setType(String type){
+        mNewDeal.getValue().setType(type);
+        mNewDeal.setValue(mNewDeal.getValue());
+    }
+
+    public void setStatus(String status){
+        mNewDeal.getValue().setStatus(status);
         mNewDeal.setValue(mNewDeal.getValue());
     }
 

@@ -6,8 +6,6 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,23 +14,24 @@ import androidx.fragment.app.DialogFragment;
 public class InputOwnerDialog extends DialogFragment {
 
 
-    private String[] mManagers;
+    private String[] mArray;
 
 
 
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        mManagers = (String[]) getArguments().getSerializable("managers");
+        mArray = (String[]) getArguments().getSerializable("array");
+
+
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("куратор сделки");
-        builder.setItems(mManagers, new DialogInterface.OnClickListener() {
+        builder.setTitle(getArguments().getString("title"));
+        builder.setItems(mArray, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-//                Toast.makeText(getActivity(), "выбран кот" + mManagers[which], Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent();
-                intent.putExtra("manager", mManagers[which]);
+                intent.putExtra("data", mArray[which]);
                 getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, intent);
             }
         });

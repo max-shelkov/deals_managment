@@ -8,17 +8,25 @@ import java.util.UUID;
 
 public class Deal implements Serializable{
 
-    public static final String DEAL_STATUS_NEW = "new_deal";
-    public static final String DEAL_STATUS_CURRENT = "current_deal";
-    public static final String DEAL_STATUS_BREAK = "break_deal";
-    public static final String DEAL_STATUS_REGIONAL_OUT = "regional_out_deal";
-    public static final String DEAL_STATUS_REGIONAL_IN = "regional_in_deal";
-    public static final String DEAL_STATUS_OVERSELL = "oversell_deal";
-    public static final String DEAL_STATUS_PROLONGATION = "prolongation_deal";
-    public static final String DEAL_STATUS_PREPROLONGATION = "preprolongation_deal";
+    public static final String DEAL_STATUS_NEW = "Новый";
+    public static final String DEAL_STATUS_CURRENT = "Текущий";
+    public static final String DEAL_STATUS_BREAK = "Расторжение";
+    public static final String DEAL_STATUS_OVERSELL = "Допродажа";
+    public static final String DEAL_STATUS_PROLONGATION = "Продление";
+    public static final String DEAL_STATUS_PREPROLONGATION = "ППС3";
 
-    public static final String DEAL_TYPE_SELL = "type_sell";
-    public static final String DEAL_TYPE_EXCHANGE = "type_exchange";
+    public static final String[] DEAL_STATUSES =
+            {DEAL_STATUS_NEW, DEAL_STATUS_CURRENT, DEAL_STATUS_BREAK,
+            DEAL_STATUS_OVERSELL, DEAL_STATUS_PROLONGATION, DEAL_STATUS_PREPROLONGATION};
+
+    public static final String DEAL_TYPE_SELL = "Продажи";
+    public static final String DEAL_TYPE_EXCHANGE = "Бартер";
+    public static final String DEAL_TYPE_REGIONAL_OUT = "Исх.Рег";
+    public static final String DEAL_TYPE_REGIONAL_IN = "Вх.Рег";
+
+    public static final String[] DEAL_TYPES =
+            {DEAL_TYPE_SELL, DEAL_TYPE_EXCHANGE,
+            DEAL_TYPE_REGIONAL_OUT, DEAL_TYPE_REGIONAL_IN, };
 
     private UUID mId;           //1
     private String mOwner;      //2
@@ -40,6 +48,7 @@ public class Deal implements Serializable{
     private int mDuration;    //17
     private Deal mProlongationDeal;
     private String mNote;
+
 
 //    private boolean mCleared;
 
@@ -74,6 +83,9 @@ public class Deal implements Serializable{
         mStartMonth = Calendar.getInstance();
         mStartMonth.add(Calendar.MONTH, 1);
         mStartMonth.set(Calendar.DAY_OF_MONTH,1);
+
+        mType = DEAL_TYPE_SELL;
+        mStatus = DEAL_STATUS_NEW;
     }
 
     public Deal(String owner, String name, String contractor, String status,
@@ -195,6 +207,7 @@ public class Deal implements Serializable{
     public void setDuration(short duration) {
         mDuration = duration;
         mFinishMonth = calculateFinishMonth(mStartMonth, mDuration);
+        if (mRealVolume>0) mAmount = mRealVolume * mDuration;
     }
 
     public Calendar getStartMonth() {
@@ -269,5 +282,19 @@ public class Deal implements Serializable{
 
     public void setRealVolume(int realVolume) {
         mRealVolume = realVolume;
+        if (mPriceVolume>0) mDiscount = 100 - 100*mRealVolume / mPriceVolume;
+        if (mDuration>0) mAmount = mRealVolume * mDuration;
+    }
+
+    public void setType(String type) {
+        mType = type;
+    }
+
+    public String getType() {
+        return mType;
+    }
+
+    public void setStatus(String status) {
+        mStatus = status;
     }
 }

@@ -269,27 +269,9 @@ public class DealsKeeper{
     }
 
     public int getUniqueClientsCount(){
-
-        ArrayList<String> uniqueNames = new ArrayList<>();
-        boolean found = false;
+        Set<String> uniqueNames = new HashSet();
         for (int i = 0; i < mDeals.size(); i++) {
-            found = false;
-            if(i==0){
-                uniqueNames.add(mDeals.get(i).getName());
-                found = true;
-            } else {
-                for (int j = 0; j < uniqueNames.size(); j++) {
-                    if (mDeals.get(i).getName().equals(uniqueNames.get(j))) {
-                        found = true;
-                    }
-                }
-            }
-            if(!found){
-                uniqueNames.add(mDeals.get(i).getName());
-            }
-        }
-        for (int i = 0; i < uniqueNames.size(); i++) {
-            Log.d(TAG, "#"+i+" name = " + uniqueNames.get(i));
+            uniqueNames.add(mDeals.get(i).getName());
         }
         return uniqueNames.size();
     }
@@ -306,7 +288,7 @@ public class DealsKeeper{
         }else if (status.equals("Продление")){
             return Deal.DEAL_STATUS_PROLONGATION;
         } else if (status.equals("Регионалка")){
-            return Deal.DEAL_STATUS_REGIONAL_OUT;
+            return Deal.DEAL_STATUS_CURRENT;
         } else {
             return "";
         }
