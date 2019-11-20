@@ -18,11 +18,33 @@
             android:layout_marginBottom="25dp"
             android:background="@color/color2GisGreenMedium">
             <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:background="@color/color2GisBlueMedium">
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:background="@color/color2GisBlueMedium">
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
                     <TextView
+                        android:id="@+id/type_text_view_deal_details"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        android:layout_weight="1"
+                        android:textSize="18sp"
+                        android:text="ххххххх"/>
+                    <TextView
+                        android:id="@+id/status_text_view_deal_details"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        android:layout_weight="1"
+                        android:textSize="18sp"
+                        android:text="ххххххх"/>
+                </LinearLayout>
+
+                <TextView
                         android:id="@+id/company_name_text_view"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -32,7 +54,7 @@
                         android:textSize="25sp"
                         />
                     <TextView
-                        android:id="@+id/contractor_text_view_new_deal"
+                        android:id="@+id/contractor_text_view_deal_details"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Contractor"

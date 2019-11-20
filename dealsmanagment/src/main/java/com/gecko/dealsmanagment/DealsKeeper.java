@@ -103,6 +103,7 @@ public class DealsKeeper{
             } else {
                 Log.d(TAG, "assets found");
             }
+            assert am != null;
             Workbook wb = new HSSFWorkbook(am.open("201910.xls"));
 //            Workbook wb = WorkbookFactory.create(am.open(fileName));
             Sheet sheet = wb.getSheet("текущие");
@@ -151,6 +152,7 @@ public class DealsKeeper{
                         ,msXlsCellToInt(cellRealVolume.getStringCellValue())
                         ,startDate
                         ,(int)cellDuration.getNumericCellValue());
+                d.setType(defineType(cellStatus.getStringCellValue()));
                 d.setToPay((int)(cellToPay.getNumericCellValue()*100));
                 d.setBalance((int)(cellBalance.getNumericCellValue())*100);
                 d.setPayPlanDate(payPlanDate);
@@ -289,6 +291,26 @@ public class DealsKeeper{
             return Deal.DEAL_STATUS_PROLONGATION;
         } else if (status.equals("Регионалка")){
             return Deal.DEAL_STATUS_CURRENT;
+        } else {
+            return "";
+        }
+    }
+
+    private String defineType(String type){
+        if (type.equals("Продажи")
+                ||type.equals("Расторжение")
+                ||type.equals("Новый")
+                ||type.equals("Допродажа")
+                ||type.equals("Продление")){
+            return Deal.DEAL_TYPE_SELL;
+        } else if(type.equals("Рекламный бартер")){
+            return Deal.DEAL_TYPE_EXCHANGE;
+        } else if(type.equals("Товарный бартер")){
+            return Deal.DEAL_TYPE_EXCHANGE;
+        } else if(type.equals("Входящая регионалка")) {
+            return Deal.DEAL_TYPE_REGIONAL_IN;
+        } else if(type.equals("Исходящая регионалка")){
+            return Deal.DEAL_TYPE_REGIONAL_OUT;
         } else {
             return "";
         }

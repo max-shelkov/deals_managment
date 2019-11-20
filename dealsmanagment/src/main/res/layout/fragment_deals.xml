@@ -21,9 +21,11 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        style="?attr/buttonBarStyle">
         <Button
             android:id="@+id/button_serialize"
+            style="?attr/buttonBarButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="serialize"
@@ -32,6 +34,7 @@
 
         <Button
             android:id="@+id/button_deserialize"
+            style="?attr/buttonBarButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="deserialize"
@@ -40,18 +43,11 @@
 
 
         <Button
-            android:id="@+id/button_change_num"
+            android:id="@+id/button_read_from_asset_file"
+            style="?attr/buttonBarButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="change_name"
-            android:layout_weight="1"
-            android:singleLine="true"/>
-
-        <Button
-            android:id="@+id/button_change_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="read from file"
+            android:text="read from asset_file"
             android:layout_weight="1"
             android:singleLine="true"/>
     </LinearLayout>

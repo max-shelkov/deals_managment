@@ -25,10 +25,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.gecko.dealsmanagment.Deal;
 import com.gecko.dealsmanagment.DealsKeeper;
-import com.gecko.dealsmanagment.GeckoUtils;
 import com.gecko.dealsmanagment.R;
 
-import java.util.Calendar;
 import java.util.List;
 
 import static com.gecko.dealsmanagment.GeckoUtils.formattedInt;
@@ -42,7 +40,7 @@ public class DealsFragment extends Fragment {
 
     private DealsViewModel mDealsViewModel;
 
-    private Button mButtonChangeMpp, mButtonLoadDealsFromXls;
+    private Button mButtonLoadDealsFromXls;
     private Button mButtonSerialize, mButtonDeserialize;
     private RecyclerView mDealsRecyclerView;
     private DealsAdapter mAdapter;
@@ -62,8 +60,7 @@ public class DealsFragment extends Fragment {
 //        mTextView = root.findViewById(R.id.text_deals);
         mButtonSerialize = root.findViewById(R.id.button_serialize);
         mButtonDeserialize = root.findViewById(R.id.button_deserialize);
-        mButtonChangeMpp = root.findViewById(R.id.button_change_num);
-        mButtonLoadDealsFromXls = root.findViewById(R.id.button_change_text);
+        mButtonLoadDealsFromXls = root.findViewById(R.id.button_read_from_asset_file);
         mDealsRecyclerView = root.findViewById(R.id.recycler_view_deals);
         mDealsRecyclerView.setHasFixedSize(true);
         mDealsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -83,20 +80,6 @@ public class DealsFragment extends Fragment {
             public void onClick(View v) {
                 Log.d(TAG, "Deserialize clicked");
                 mDealsViewModel.deserializeDealsKeeper();
-            }
-        });
-
-        mButtonChangeMpp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "change mpp clicked");
-
-                Calendar c1 = Calendar.getInstance();
-                c1.set(2018, 11, 01);
-                Calendar c2 = Calendar.getInstance();
-                Log.d(TAG, "between c1 and c2 is " + GeckoUtils.monthsBetween(c1,c2) + " months");
-
-//                mDealsViewModel.changeMPP();
             }
         });
 
@@ -233,7 +216,7 @@ public class DealsFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.options_menu, menu);
+        inflater.inflate(R.menu.deals_list_options_menu, menu);
     }
 
     @Override

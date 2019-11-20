@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/color2GisBlueLight"
     android:layout_marginBottom="?attr/actionBarSize">
+
     <LinearLayout
         android:id="@+id/root_linear_layout_new_deal"
         android:layout_width="match_parent"
@@ -55,7 +56,7 @@
             android:orientation="horizontal"
             android:layout_marginTop="12dp">
             <AutoCompleteTextView
-                android:id="@+id/contractor_text_view_new_deal"
+                android:id="@+id/contractor_text_view_deal_details"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAlignment="center"

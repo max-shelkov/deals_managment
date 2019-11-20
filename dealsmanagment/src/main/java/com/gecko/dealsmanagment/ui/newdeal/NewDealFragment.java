@@ -33,7 +33,7 @@ import com.gecko.dealsmanagment.GeckoUtils;
 import com.gecko.dealsmanagment.InputDataDialog;
 import com.gecko.dealsmanagment.MainActivity;
 import com.gecko.dealsmanagment.R;
-import com.gecko.dealsmanagment.ui.InputOwnerDialog;
+import com.gecko.dealsmanagment.InputFromListDialogToFragment;
 
 import java.util.Calendar;
 
@@ -91,7 +91,7 @@ public class NewDealFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 FragmentManager manager = getFragmentManager();
-                InputOwnerDialog iod  = new InputOwnerDialog();
+                InputFromListDialogToFragment iod  = new InputFromListDialogToFragment();
                 iod.setTargetFragment(mFragmentCtx, REQUEST_CODE_DEAL_TYPE);
                 Bundle bundle = new Bundle();
                 bundle.putString("title", "тип сделки");
@@ -105,7 +105,7 @@ public class NewDealFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 FragmentManager manager = getFragmentManager();
-                InputOwnerDialog iod  = new InputOwnerDialog();
+                InputFromListDialogToFragment iod  = new InputFromListDialogToFragment();
                 iod.setTargetFragment(mFragmentCtx, REQUEST_CODE_DEAL_STATUS);
                 Bundle bundle = new Bundle();
                 bundle.putString("title", "тип сделки");
@@ -129,7 +129,7 @@ public class NewDealFragment extends Fragment {
                 }
             }
         });
-        mContractorTextView = root.findViewById(R.id.contractor_text_view_new_deal);
+        mContractorTextView = root.findViewById(R.id.contractor_text_view_deal_details);
         mContractorToggleButton = root.findViewById(R.id.contractor_toggle_button_new_deal);
         mContractorToggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -193,7 +193,7 @@ public class NewDealFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 FragmentManager manager = getFragmentManager();
-                InputOwnerDialog iod  = new InputOwnerDialog();
+                InputFromListDialogToFragment iod  = new InputFromListDialogToFragment();
                 iod.setTargetFragment(mFragmentCtx, REQUEST_CODE_OWNER);
                 Bundle bundle = new Bundle();
                 bundle.putString("title", "куратор сделки");

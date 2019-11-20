@@ -1,4 +1,4 @@
-package com.gecko.dealsmanagment.ui;
+package com.gecko.dealsmanagment;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-public class InputOwnerDialog extends DialogFragment {
+public class InputFromListDialogToFragment extends DialogFragment {
 
 
     private String[] mArray;
@@ -22,8 +22,6 @@ public class InputOwnerDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         mArray = (String[]) getArguments().getSerializable("array");
-
-
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(getArguments().getString("title"));

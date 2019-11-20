@@ -80,4 +80,9 @@ public class MainActivity extends AppCompatActivity {
             Log.d(TAG, "permissions granted");
         }
     }
+
+    @Override
+    public void onBackPressed() {
+
+    }
 }

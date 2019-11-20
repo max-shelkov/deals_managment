@@ -2,7 +2,7 @@
     <string name="app_name">DealsManagment</string>
     <string name="title_deals">Deals</string>
     <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_new_deal">New deal</string>
     <string name="change_num">change num</string>
     <string name="change_text">change text</string>
     <string name="load_xls">load from xls file</string>
@@ -10,8 +10,9 @@
     <string name="deal_current">продажи</string>
     <string name="clear_deals">clear deals</string>
     <string name="sells">продажи</string>
-    <string name="dashboard_header_current_volume">текущий объем</string>
+    <string name="dashboard_header_current_publication">текущий выпуск</string>
     <string name="dashboard_header_prolongation">объем к продлению</string>
     <string name="dashboard_header_unique_clients_count">число уникальных клиентов в выпуске</string>
     <string name="new_deal_firm_name">название фирмы</string>
+    <string name="edit_deal">редактировать сделку</string>
 </resources>

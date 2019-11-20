@@ -95,7 +95,7 @@ public class SetMoneyDialogFragment extends DialogFragment implements View.OnCli
                 } catch (Exception e){
                     Toast.makeText(getActivity(), "Введены некорретные данные", Toast.LENGTH_LONG ).show();
                 }
-                mListener.onDialogFragmentDataEntered(mMoneyAmount, mDateOfPayment, mDialogTag);
+                mListener.onDialogFragmentMoneyDataEntered(mMoneyAmount, mDateOfPayment, mDialogTag);
                 break;
             case R.id.dialog_cancel_button:
                 break;
@@ -114,6 +114,6 @@ public class SetMoneyDialogFragment extends DialogFragment implements View.OnCli
     }
 
     public interface SetMoneyDialogFragmentListener{
-        void onDialogFragmentDataEntered(int money, Calendar date, String tag);
+        void onDialogFragmentMoneyDataEntered(int money, Calendar date, String tag);
     }
 }

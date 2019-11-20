@@ -94,6 +94,7 @@ public class Deal implements Serializable{
         mOwner = owner;
         mName = name;
         mContractor = contractor;
+        mType = DEAL_TYPE_SELL;
         mStatus = status;
         mPriceVolume = priceVolume;
         mRealVolume = realVolume;
