@@ -25,10 +25,14 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
+import static com.gecko.dealsmanagment.GeckoUtils.formattedInt;
+import static com.gecko.dealsmanagment.GeckoUtils.monthsBetween;
 import static com.gecko.dealsmanagment.GeckoUtils.msXlsCellToInt;
 import static com.gecko.dealsmanagment.GeckoUtils.msXlsDateToCalendar;
 
@@ -72,7 +76,7 @@ public class DealsKeeper{
         String s1 = s.substring(index+1);
         String s2 = String.valueOf(Environment.getExternalStorageDirectory());
         String s3 = s2 +"/"+ s1;
-        String s4 = "/storage/emulated/0/Download/201910.xls";
+        String s4 = "/storage/emulated/0/Download/201911.xls";
 
         File sdPath = Environment.getExternalStorageDirectory();
 //        File sdFile = new File(sdPath.getAbsolutePath() + "/" + s1);
@@ -104,7 +108,7 @@ public class DealsKeeper{
                 Log.d(TAG, "assets found");
             }
             assert am != null;
-            Workbook wb = new HSSFWorkbook(am.open("201910.xls"));
+            Workbook wb = new HSSFWorkbook(am.open("201911.xls"));
 //            Workbook wb = WorkbookFactory.create(am.open(fileName));
             Sheet sheet = wb.getSheet("текущие");
             Log.d(TAG, "after got sheet");
@@ -178,7 +182,33 @@ public class DealsKeeper{
         return mppSet.toArray(new String[0]);
     }
 
+    public String[] findProlongations(){
+        List<String> prolongationsList = new ArrayList<>();
+        for (int i = 0; i < mDeals.size(); i++) {
 
+            if (monthsBetween(mDeals.get(i).getStartMonth(), Calendar.getInstance())==mDeals.get(i).getDuration()){
+                prolongationsList.add(mDeals.get(i).getName()+": "+formattedInt(mDeals.get(i).getPriceVolume()));
+            }
+        }
+        return prolongationsList.toArray(new String[0]);
+    }
+
+    public String[] findDealsForOversell(){
+        Set<String> dealsNames = new HashSet<>();
+        for (int i = 0; i < mDeals.size(); i++) {
+            dealsNames.add(mDeals.get(i).getName());
+        }
+        return dealsNames.toArray(new String[0]);
+    }
+
+    public Deal findDealByNameAndVolume(String name, int volume){
+        for (int i = 0; i < mDeals.size(); i++) {
+            if (mDeals.get(i).getName().equals(name)&&mDeals.get(i).getPriceVolume()==volume){
+                return mDeals.get(i);
+            }
+        }
+        return null;
+    }
 
     public void serializeDeals(){
         Log.d(TAG, "start Serializing deals array");
@@ -325,6 +355,16 @@ public class DealsKeeper{
         return nSet.toArray(new String[0]);
     }
 
+    public String[] getPps3Names(){
+        Set<String> pps3 = new HashSet<>();
+        for (int i = 0; i < mDeals.size() ; i++) {
+            if (monthsBetween(Calendar.getInstance(), mDeals.get(i).getFinishMonth())==2){
+                pps3.add(mDeals.get(i).getName());
+            }
+        }
+        return pps3.toArray(new String[0]);
+    }
+
     public String findContractorByFirmName(String name){
         for (Deal d: mDeals) {
             if (d.getName().equals(name)){
@@ -334,4 +374,16 @@ public class DealsKeeper{
         return null;
     }
 
+    public String findOwnerByFirmName(String name){
+        for (Deal d: mDeals) {
+            if (d.getName().equals(name)){
+                return d.getOwner();
+            }
+        }
+        return null;
+    }
+
+    public void sortDeals() {
+        Collections.sort(mDeals);
+    }
 }

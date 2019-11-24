@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,9 +28,11 @@ import com.gecko.dealsmanagment.Deal;
 import com.gecko.dealsmanagment.DealsKeeper;
 import com.gecko.dealsmanagment.R;
 
+import java.util.Calendar;
 import java.util.List;
 
 import static com.gecko.dealsmanagment.GeckoUtils.formattedInt;
+import static com.gecko.dealsmanagment.GeckoUtils.monthsBetween;
 
 public class DealsFragment extends Fragment {
 
@@ -149,6 +152,7 @@ public class DealsFragment extends Fragment {
         private TextView mOwnerName;
         private TextView mPriceVolume;
         private TextView mToPay;
+        private ProgressBar mPeriod;
 
         private Deal mDeal;
 
@@ -160,6 +164,8 @@ public class DealsFragment extends Fragment {
             mOwnerName = itemView.findViewById(R.id.owner_name);
             mPriceVolume = itemView.findViewById(R.id.price_volume);
             mToPay = itemView.findViewById(R.id.to_pay);
+            mPeriod = itemView.findViewById(R.id.period_progress_bar_recycler_item);
+
         }
 
         public void bind(Deal d){
@@ -168,7 +174,8 @@ public class DealsFragment extends Fragment {
             mOwnerName.setText(mDeal.getOwner());
             mPriceVolume.setText("V: "+ formattedInt(mDeal.getPriceVolume()));
             mToPay.setText("Rub: "+ formattedInt(mDeal.getToPay()));
-
+            mPeriod.setMax(mDeal.getDuration());
+            mPeriod.setProgress(monthsBetween(mDeal.getStartMonth(), Calendar.getInstance()));
         }
 
         @Override

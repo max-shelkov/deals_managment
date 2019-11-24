@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.Calendar;
 import java.util.UUID;
 
-public class Deal implements Serializable{
+public class Deal implements Serializable, Comparable<Deal>{
 
     public static final String DEAL_STATUS_NEW = "Новый";
     public static final String DEAL_STATUS_CURRENT = "Текущий";
@@ -14,6 +14,7 @@ public class Deal implements Serializable{
     public static final String DEAL_STATUS_OVERSELL = "Допродажа";
     public static final String DEAL_STATUS_PROLONGATION = "Продление";
     public static final String DEAL_STATUS_PREPROLONGATION = "ППС3";
+    public static final String DEAL_STATUS_ARCHIVE = "Архив";
 
     public static final String[] DEAL_STATUSES =
             {DEAL_STATUS_NEW, DEAL_STATUS_CURRENT, DEAL_STATUS_BREAK,
@@ -129,7 +130,7 @@ public class Deal implements Serializable{
     @NonNull
     @Override
     public String toString() {
-        String s = "Id = " +mId;
+        String s = "Id = " +mId+ " name = " + mName;
         return s;
     }
 
@@ -297,5 +298,10 @@ public class Deal implements Serializable{
 
     public void setStatus(String status) {
         mStatus = status;
+    }
+
+    @Override
+    public int compareTo(Deal d) {
+        return this.getName().compareTo(d.getName());
     }
 }

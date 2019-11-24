@@ -86,7 +86,8 @@ public class GeckoUtils {
     }
 
     public static int msXlsCellToInt(String strNum){
-//        strNum = strNum.replace(" ","");
+        strNum = strNum.replace(" ","");
+        strNum = strNum.replace(",",".");
         int res = 0;
         int multiplicator=0;
         if (strNum.contains(".")){

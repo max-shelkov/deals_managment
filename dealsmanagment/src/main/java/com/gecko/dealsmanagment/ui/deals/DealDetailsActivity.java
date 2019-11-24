@@ -45,6 +45,7 @@ public class DealDetailsActivity extends AppCompatActivity implements SetMoneyDi
     private ProgressBar mPeriodProgressBar;
     private TextView mStartDateTextView;
     private TextView mFinishDateTextView;
+    private TextView mPeriodTextView;
     private TextView mVolumePriceTextView;
     private TextView mVolumeRealTextView;
     private TextView mToPayTextView;
@@ -80,6 +81,7 @@ public class DealDetailsActivity extends AppCompatActivity implements SetMoneyDi
         mPeriodProgressBar.setMax(mDeal.getDuration());
         mStartDateTextView = findViewById(R.id.start_date_text_view);
         mFinishDateTextView = findViewById(R.id.finish_date_text_view);
+        mPeriodTextView = findViewById(R.id.period_text_view_deal_details);
         mVolumePriceTextView = findViewById(R.id.v_price_text_view);
         mVolumeRealTextView = findViewById(R.id.v_real_text_view);
         mToPayTextView = findViewById(R.id.to_pay_text_view);
@@ -153,6 +155,7 @@ public class DealDetailsActivity extends AppCompatActivity implements SetMoneyDi
         mAmountTextView.setText("сумма сделки "+formattedInt(mDeal.getAmount())+ " руб.");
         mStartDateTextView.setText(monthCalendarToString(mDeal.getStartMonth()));
         mFinishDateTextView.setText(monthCalendarToString(mDeal.getFinishMonth()));
+        mPeriodTextView.setText("["+monthsBetween(mDeal.getStartMonth(), Calendar.getInstance())+"/"+mDeal.getDuration()+"]");
         mPeriodProgressBar.setProgress(monthsBetween(mDeal.getStartMonth(), Calendar.getInstance()));
         mVolumePriceTextView.setText("Vп " + formattedInt(mDeal.getPriceVolume()) + " руб.");
         mVolumeRealTextView.setText("Vф " + formattedInt(mDeal.getRealVolume())+ " руб.");

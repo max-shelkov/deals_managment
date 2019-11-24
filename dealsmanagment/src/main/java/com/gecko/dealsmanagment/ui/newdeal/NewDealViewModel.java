@@ -7,18 +7,23 @@ import androidx.lifecycle.ViewModel;
 import com.gecko.dealsmanagment.Deal;
 import com.gecko.dealsmanagment.DealsKeeper;
 
+import java.io.Serializable;
 import java.util.Calendar;
+import java.util.List;
 
 public class NewDealViewModel extends ViewModel {
 
 
-    private MutableLiveData<DealsKeeper> mDealsKeeper;
+//    private MutableLiveData<DealsKeeper> mDealsKeeper;
+    private DealsKeeper mDealsKeeper;
     private MutableLiveData<Deal> mNewDeal;
 
     public NewDealViewModel() {
 
-        mDealsKeeper = new MutableLiveData<>();
-        mDealsKeeper.setValue(new DealsKeeper());
+//        mDealsKeeper = new MutableLiveData<>();
+//        mDealsKeeper.setValue(new DealsKeeper());
+
+        mDealsKeeper = new DealsKeeper();
 
         mNewDeal = new MutableLiveData<>();
         mNewDeal.setValue(new Deal());
@@ -29,9 +34,9 @@ public class NewDealViewModel extends ViewModel {
         return mNewDeal;
     }
 
-    public MutableLiveData<DealsKeeper> getDealsKeeper() {
-        return mDealsKeeper;
-    }
+//    public MutableLiveData<DealsKeeper> getDealsKeeper() {
+//        return mDealsKeeper;
+//    }
 
 /*
     public void addDeal(Deal d){
@@ -42,17 +47,36 @@ public class NewDealViewModel extends ViewModel {
 */
 
     public String[] findManagersFromDeals(){
-        return  mDealsKeeper.getValue().findMppFromDeals();
+        return  mDealsKeeper.findMppFromDeals();
     }
 
+    public String[] findProlongations(){
+        return mDealsKeeper.findProlongations();
+    }
+
+    public String[] findDealsForOversell() {
+        return mDealsKeeper.findDealsForOversell();
+    }
+
+
+    public Deal findDealByNameAndVolume(String name, int volume){
+        return mDealsKeeper.findDealByNameAndVolume(name, volume);
+    }
+
+
     public String findContractor(String name){
-        return mDealsKeeper.getValue().findContractorByFirmName(name);
+        return mDealsKeeper.findContractorByFirmName(name);
+    }
+
+    public String findOwner(String name){
+        return mDealsKeeper.findOwnerByFirmName(name);
     }
 
     public void addNewDealToKeeper(){
-        mDealsKeeper.getValue().addDeal(mNewDeal.getValue());
-        mDealsKeeper.getValue().serializeDeals();
-        mDealsKeeper.setValue(mDealsKeeper.getValue());
+        mDealsKeeper.addDeal(mNewDeal.getValue());
+        mDealsKeeper.sortDeals();
+        mDealsKeeper.serializeDeals();
+//        mDealsKeeper.setValue(mDealsKeeper.getValue());
     }
 
     public void setStartDate(Calendar date){
@@ -114,6 +138,27 @@ public class NewDealViewModel extends ViewModel {
     public void setStatus(String status){
         mNewDeal.getValue().setStatus(status);
         mNewDeal.setValue(mNewDeal.getValue());
+    }
+
+    public void setProlongationDeal(Deal d){
+        mNewDeal.getValue().setProlongationDeal(d);
+        mNewDeal.setValue(mNewDeal.getValue());
+    }
+
+    public String getProlongationDealName(){
+        return mNewDeal.getValue().getProlongationDeal().getName();
+    }
+
+    public String getProlongationDealContractor(){
+        return mNewDeal.getValue().getProlongationDeal().getContractor();
+    }
+
+    public String[] getDealsNames(){
+        return mDealsKeeper.getNames();
+    }
+
+    public String[] getPps3Names(){
+        return mDealsKeeper.getPps3Names();
     }
 
 }

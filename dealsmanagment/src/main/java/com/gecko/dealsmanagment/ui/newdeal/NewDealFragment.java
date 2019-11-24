@@ -28,7 +28,6 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.gecko.dealsmanagment.Deal;
-import com.gecko.dealsmanagment.DealsKeeper;
 import com.gecko.dealsmanagment.GeckoUtils;
 import com.gecko.dealsmanagment.InputDataDialog;
 import com.gecko.dealsmanagment.MainActivity;
@@ -48,6 +47,10 @@ public class NewDealFragment extends Fragment {
     private static final int REQUEST_CODE_SUM_TO_PAY = 104;
     private static final int REQUEST_CODE_DEAL_TYPE = 105;
     private static final int REQUEST_CODE_DEAL_STATUS = 106;
+    private static final int REQUEST_CODE_DEAL_PROLONGATION = 107;
+    private static final int REQUEST_CODE_OVERSELL = 108;
+    private static final int REQUEST_CODE_DEAL_PRE_PROLONGATION = 109;
+    private static final int REQUEST_CODE_DEAL_BREAK = 110;
 
     private Context mMainActivityCtx;
     private Fragment mFragmentCtx;
@@ -215,7 +218,7 @@ public class NewDealFragment extends Fragment {
 
 
         mNameTextView.setThreshold(1);
-        String[] names = mNewDealViewModel.getDealsKeeper().getValue().getNames();
+        String[] names = mNewDealViewModel.getDealsNames();
         if(names != null) {
             mNameTextView.setAdapter(new ArrayAdapter<>(mMainActivityCtx, android.R.layout.simple_dropdown_item_1line, names));
         }
@@ -236,12 +239,14 @@ public class NewDealFragment extends Fragment {
             }
         });
 
+/*
         mNewDealViewModel.getDealsKeeper().observe(this, new Observer<DealsKeeper>() {
             @Override
             public void onChanged(DealsKeeper dealsKeeper) {
 
             }
         });
+*/
 
         if (MainActivity.getAppContext() == null){
             Log.d(TAG, "activity context = null");
@@ -334,6 +339,38 @@ public class NewDealFragment extends Fragment {
                 .show();
     }
 
+    private void chooseProlongationDeal(){
+        FragmentManager manager = getFragmentManager();
+        InputFromListDialogToFragment inputDialog  = new InputFromListDialogToFragment();
+        inputDialog.setTargetFragment(mFragmentCtx, REQUEST_CODE_DEAL_PROLONGATION);
+        Bundle bundle = new Bundle();
+        bundle.putString("title", "продление сделки");
+        bundle.putSerializable("array", mNewDealViewModel.findProlongations());
+        inputDialog.setArguments(bundle);
+        inputDialog.show(manager, "not_used_tag");
+    }
+
+    private void chooseOversellDeal(){
+        FragmentManager manager = getFragmentManager();
+        InputFromListDialogToFragment inputDialog  = new InputFromListDialogToFragment();
+        inputDialog.setTargetFragment(mFragmentCtx, REQUEST_CODE_OVERSELL);
+        Bundle bundle = new Bundle();
+        bundle.putString("title", "допродажа");
+        bundle.putSerializable("array", mNewDealViewModel.getDealsNames());
+        inputDialog.setArguments(bundle);
+        inputDialog.show(manager, "not_used_tag");
+    }
+
+    private void choosePps3Deal() {
+        FragmentManager manager = getFragmentManager();
+        InputFromListDialogToFragment inputDialog  = new InputFromListDialogToFragment();
+        inputDialog.setTargetFragment(mFragmentCtx, REQUEST_CODE_DEAL_PRE_PROLONGATION);
+        Bundle bundle = new Bundle();
+        bundle.putString("title", "ППС3");
+        bundle.putSerializable("array", mNewDealViewModel.getPps3Names());
+        inputDialog.setArguments(bundle);
+        inputDialog.show(manager, "not_used_tag");
+    }
 
 
 
@@ -394,9 +431,42 @@ public class NewDealFragment extends Fragment {
                 case REQUEST_CODE_DEAL_STATUS:
                     String status = data.getStringExtra("data");
                     mNewDealViewModel.setStatus(status);
+                    if (status.equals("Продление")) {
+                        chooseProlongationDeal();
+                    } else if (status.equals("Допродажа")){
+                        chooseOversellDeal();
+                    } else if (status.equals("ППС3")){
+                        choosePps3Deal();
+                    }
+                    break;
+                case REQUEST_CODE_DEAL_PROLONGATION:
+                    String deal = data.getStringExtra("data");
+                    String firmName = deal.substring(0, deal.indexOf(":"));
+                    String priceVolumeStr = deal.substring(deal.indexOf(":")+1);
+                    int priceVolume = GeckoUtils.msXlsCellToInt(priceVolumeStr);
+                    Deal prolong = (mNewDealViewModel.findDealByNameAndVolume(firmName, priceVolume));
+                    mNewDealViewModel.setProlongationDeal(prolong);
+                    mNewDealViewModel.setFirmName(mNewDealViewModel.getProlongationDealName());
+                    mNewDealViewModel.setContractor(mNewDealViewModel.getProlongationDealContractor());
+                    mNewDealViewModel.setOwner(mNewDealViewModel.findOwner(firmName));
+                    mNameToggleButton.setChecked(false);
+                    mContractorToggleButton.setChecked(false);
+                    break;
+                case REQUEST_CODE_OVERSELL:
+                case REQUEST_CODE_DEAL_PRE_PROLONGATION:
+                    String name = data.getStringExtra("data");
+                    mNewDealViewModel.setFirmName(name);
+                    mNewDealViewModel.setContractor(mNewDealViewModel.findContractor(name));
+                    mNewDealViewModel.setOwner(mNewDealViewModel.findOwner(name));
+                    mNameToggleButton.setChecked(false);
+                    mContractorToggleButton.setChecked(false);
                     break;
             }
 
         }
     }
+
+
+
+
 }

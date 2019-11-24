@@ -92,6 +92,13 @@
                             android:textSize="18sp"
                             android:text="00.00.2019"/>
                         <TextView
+                            android:id="@+id/period_text_view_deal_details"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="18sp"
+                            android:textAlignment="center"
+                            android:text="[xx/xx]"/>
+                        <TextView
                             android:id="@+id/finish_date_text_view"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
