@@ -1,27 +1,20 @@
 package com.gecko.dealsmanagment.ui.newdeal;
 
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.gecko.dealsmanagment.Deal;
 import com.gecko.dealsmanagment.DealsKeeper;
 
-import java.io.Serializable;
 import java.util.Calendar;
-import java.util.List;
 
 public class NewDealViewModel extends ViewModel {
 
 
-//    private MutableLiveData<DealsKeeper> mDealsKeeper;
     private DealsKeeper mDealsKeeper;
     private MutableLiveData<Deal> mNewDeal;
 
     public NewDealViewModel() {
-
-//        mDealsKeeper = new MutableLiveData<>();
-//        mDealsKeeper.setValue(new DealsKeeper());
 
         mDealsKeeper = new DealsKeeper();
 
@@ -33,18 +26,6 @@ public class NewDealViewModel extends ViewModel {
     public MutableLiveData<Deal> getNewDeal(){
         return mNewDeal;
     }
-
-//    public MutableLiveData<DealsKeeper> getDealsKeeper() {
-//        return mDealsKeeper;
-//    }
-
-/*
-    public void addDeal(Deal d){
-        mDealsKeeper.getValue().addDeal(d);
-        mDealsKeeper.getValue().serializeDeals();
-        mDealsKeeper.setValue(mDealsKeeper.getValue());
-    }
-*/
 
     public String[] findManagersFromDeals(){
         return  mDealsKeeper.findMppFromDeals();
@@ -59,8 +40,8 @@ public class NewDealViewModel extends ViewModel {
     }
 
 
-    public Deal findDealByNameAndVolume(String name, int volume){
-        return mDealsKeeper.findDealByNameAndVolume(name, volume);
+    public Deal findProlongationDealByNameAndVolume(String name, int volume){
+        return mDealsKeeper.findProlongationDealByNameAndVolume(name, volume);
     }
 
 
@@ -73,10 +54,12 @@ public class NewDealViewModel extends ViewModel {
     }
 
     public void addNewDealToKeeper(){
+
         mDealsKeeper.addDeal(mNewDeal.getValue());
         mDealsKeeper.sortDeals();
         mDealsKeeper.serializeDeals();
-//        mDealsKeeper.setValue(mDealsKeeper.getValue());
+        mNewDeal.setValue(new Deal());
+
     }
 
     public void setStartDate(Calendar date){
@@ -99,7 +82,7 @@ public class NewDealViewModel extends ViewModel {
     }
 
     public void setDuration(short t){
-        if ( t>=0 &&t <= 12) {
+        if ( t>0 &&t <= 12) {
             mNewDeal.getValue().setDuration(t);
             mNewDeal.setValue(mNewDeal.getValue());
         }

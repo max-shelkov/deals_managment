@@ -24,10 +24,6 @@ public class DealsViewModel extends ViewModel {
         }
     }
 
-    public void changeMPP(){
-        mDealsKeeper.getValue().getDeals().get(0).setOwner("Manager3");
-        mDealsKeeper.setValue(mDealsKeeper.getValue());
-    }
 
     public void loadDeals(){
         List<Deal> deals = mDealsKeeper.getValue().dealsLoader("201910.xls");
@@ -69,5 +65,9 @@ public class DealsViewModel extends ViewModel {
     public void changeDeal(Deal d) {
         mDealsKeeper.getValue().replaceDeal(d);
         mDealsKeeper.setValue(mDealsKeeper.getValue());
+    }
+
+    public void logDealsStatuses(){
+        mDealsKeeper.getValue().logDealsStatuses();
     }
 }

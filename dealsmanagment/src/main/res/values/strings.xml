@@ -12,7 +12,8 @@
     <string name="sells">продажи</string>
     <string name="dashboard_header_current_publication">текущий выпуск</string>
     <string name="dashboard_header_prolongation">объем к продлению</string>
-    <string name="dashboard_header_unique_clients_count">число уникальных клиентов в выпуске</string>
+    <string name="dashboard_header_next_month">продаваемый выпуск</string>
     <string name="new_deal_firm_name">название фирмы</string>
     <string name="edit_deal">редактировать сделку</string>
+    <string name="new_deals_dashboard_header">новые сделки</string>
 </resources>

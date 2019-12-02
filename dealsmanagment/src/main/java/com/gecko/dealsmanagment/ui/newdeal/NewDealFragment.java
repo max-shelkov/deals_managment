@@ -210,7 +210,10 @@ public class NewDealFragment extends Fragment {
         mOkButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mNewDealViewModel.addNewDealToKeeper();
+                if (checkEnteredData()){
+                    mNewDealViewModel.addNewDealToKeeper();
+                }
+
             }
         });
 
@@ -238,15 +241,6 @@ public class NewDealFragment extends Fragment {
                 showDeal(deal);
             }
         });
-
-/*
-        mNewDealViewModel.getDealsKeeper().observe(this, new Observer<DealsKeeper>() {
-            @Override
-            public void onChanged(DealsKeeper dealsKeeper) {
-
-            }
-        });
-*/
 
         if (MainActivity.getAppContext() == null){
             Log.d(TAG, "activity context = null");
@@ -376,12 +370,22 @@ public class NewDealFragment extends Fragment {
 
 
     private boolean checkEnteredData() {
-        boolean result = true;
-        if (mNameTextView.getText().toString().equals("")){
-            result = false;
+        if (mNewDealViewModel.getNewDeal().getValue().getName() == null){
             Toast.makeText(mMainActivityCtx, "не указано название фирмы", Toast.LENGTH_LONG).show();
+            return false;
+        } else if (mNewDealViewModel.getNewDeal().getValue().getContractor() == null){
+            Toast.makeText(mMainActivityCtx, "не указано юридическое лицо", Toast.LENGTH_LONG).show();
+            return false;
+        } else if (mNewDealViewModel.getNewDeal().getValue().getOwner() == null){
+            Toast.makeText(mMainActivityCtx, "не указан куратор сделки", Toast.LENGTH_LONG).show();
+            return false;
+        } else if (mNewDealViewModel.getNewDeal().getValue().getDuration() == 0){
+            Toast.makeText(mMainActivityCtx, "срок сделки не может быть 0", Toast.LENGTH_LONG).show();
+            return false;
         }
-        return result;
+
+
+        return true;
     }
 
     private void startInputDataDialog(String title, int requestCode){
@@ -444,7 +448,7 @@ public class NewDealFragment extends Fragment {
                     String firmName = deal.substring(0, deal.indexOf(":"));
                     String priceVolumeStr = deal.substring(deal.indexOf(":")+1);
                     int priceVolume = GeckoUtils.msXlsCellToInt(priceVolumeStr);
-                    Deal prolong = (mNewDealViewModel.findDealByNameAndVolume(firmName, priceVolume));
+                    Deal prolong = (mNewDealViewModel.findProlongationDealByNameAndVolume(firmName, priceVolume));
                     mNewDealViewModel.setProlongationDeal(prolong);
                     mNewDealViewModel.setFirmName(mNewDealViewModel.getProlongationDealName());
                     mNewDealViewModel.setContractor(mNewDealViewModel.getProlongationDealContractor());

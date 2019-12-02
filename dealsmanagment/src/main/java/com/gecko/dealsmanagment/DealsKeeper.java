@@ -45,7 +45,7 @@ public class DealsKeeper{
     private List<Deal> mDeals;
 
     public DealsKeeper() {
-        Log.d(TAG, "DealsLoader constructor");
+        Log.d(TAG, "DealsKeeper constructor");
         mDeals = new ArrayList<>();
         deserializeDeals();
     }
@@ -151,7 +151,6 @@ public class DealsKeeper{
                 Deal d = new Deal(cellOwner.getStringCellValue()
                         ,cellFirmName.getStringCellValue()
                         ,cellContractor.getStringCellValue()
-                        ,defineStatus(cellStatus.getStringCellValue())
                         ,msXlsCellToInt(cellPriceVolume.getStringCellValue())
                         ,msXlsCellToInt(cellRealVolume.getStringCellValue())
                         ,startDate
@@ -162,6 +161,7 @@ public class DealsKeeper{
                 d.setPayPlanDate(payPlanDate);
                 d.setPaid((int)(cellPaid.getNumericCellValue())*100);
                 d.setPayRealDate(payRealDate);
+                d.defineAndSetStatus();
                 deals.add(d);
 
             }
@@ -201,9 +201,10 @@ public class DealsKeeper{
         return dealsNames.toArray(new String[0]);
     }
 
-    public Deal findDealByNameAndVolume(String name, int volume){
+    public Deal findProlongationDealByNameAndVolume(String name, int volume){
         for (int i = 0; i < mDeals.size(); i++) {
-            if (mDeals.get(i).getName().equals(name)&&mDeals.get(i).getPriceVolume()==volume){
+            if ((mDeals.get(i).getStatus().equals(Deal.DEAL_STATUS_PROLONGATION))
+                    &&(mDeals.get(i).getName().equals(name)&&mDeals.get(i).getPriceVolume()==volume)){
                 return mDeals.get(i);
             }
         }
@@ -280,11 +281,40 @@ public class DealsKeeper{
 
     }
 
+    public int getNextVolumePrice(){
+        int vol = 0;
+        for (int i = 0; i < mDeals.size(); i++) {
+            if (mDeals.get(i).getStatus().equals(Deal.DEAL_STATUS_CURRENT)
+                    ||mDeals.get(i).getStatus().equals(Deal.DEAL_STATUS_PREPROLONGATION)
+                    ||mDeals.get(i).getStatus().equals(Deal.DEAL_STATUS_NEW)
+                    ||mDeals.get(i).getStatus().equals(Deal.DEAL_STATUS_OVERSELL)){
+                vol = vol + mDeals.get(i).getPriceVolume();
+            }
+        }
+        return vol;
+    }
+
+    public int getNextVolumeReal(){
+        int vol = 0;
+        for (int i = 0; i < mDeals.size(); i++) {
+            if (mDeals.get(i).getStatus().equals(Deal.DEAL_STATUS_CURRENT)
+                    ||mDeals.get(i).getStatus().equals(Deal.DEAL_STATUS_PREPROLONGATION)
+                    ||mDeals.get(i).getStatus().equals(Deal.DEAL_STATUS_NEW)
+                    ||mDeals.get(i).getStatus().equals(Deal.DEAL_STATUS_OVERSELL)){
+                vol = vol + mDeals.get(i).getRealVolume();
+            }
+        }
+        return vol;
+    }
+
+
+
+
     public int getProlongationVolumePrice(){
         int vol = 0;
         for (int i = 0; i < mDeals.size(); i++) {
             if (mDeals.get(i).getStatus().equals(Deal.DEAL_STATUS_PROLONGATION)){
-                vol+=mDeals.get(i).getPriceVolume();
+                vol = vol + mDeals.get(i).getPriceVolume();
             }
         }
         return vol;
@@ -303,12 +333,30 @@ public class DealsKeeper{
     public int getUniqueClientsCount(){
         Set<String> uniqueNames = new HashSet();
         for (int i = 0; i < mDeals.size(); i++) {
-            uniqueNames.add(mDeals.get(i).getName());
+            if (mDeals.get(i).getStatus().equals(Deal.DEAL_STATUS_PREPROLONGATION)
+                    ||mDeals.get(i).getStatus().equals(Deal.DEAL_STATUS_CURRENT)
+                    ||mDeals.get(i).getStatus().equals(Deal.DEAL_STATUS_PROLONGATION)
+                    ||mDeals.get(i).getStatus().equals(Deal.DEAL_STATUS_BREAK)){
+                uniqueNames.add(mDeals.get(i).getName());
+            }
         }
         return uniqueNames.size();
     }
 
-    private String defineStatus(String status){
+    public int getNextMonthUniqueClientsCount(){
+        Set<String> clients = new HashSet<>();
+        for (int i = 0; i < mDeals.size(); i++) {
+            if (mDeals.get(i).getStatus().equals(Deal.DEAL_STATUS_PREPROLONGATION)
+                    ||mDeals.get(i).getStatus().equals(Deal.DEAL_STATUS_CURRENT)
+                    ||mDeals.get(i).getStatus().equals(Deal.DEAL_STATUS_NEW)
+                    ||mDeals.get(i).getStatus().equals(Deal.DEAL_STATUS_OVERSELL)){
+                clients.add(mDeals.get(i).getName());
+            }
+        }
+        return clients.size();
+    }
+
+/*    private String defineStatus(String status){
         if (status.equals("Продажи")){
             return Deal.DEAL_STATUS_CURRENT;
         } else if (status.equals("Расторжение")){
@@ -324,7 +372,7 @@ public class DealsKeeper{
         } else {
             return "";
         }
-    }
+    }*/
 
     private String defineType(String type){
         if (type.equals("Продажи")
@@ -386,4 +434,44 @@ public class DealsKeeper{
     public void sortDeals() {
         Collections.sort(mDeals);
     }
+
+    public void logDealsStatuses(){
+        for (int i = 0; i < mDeals.size(); i++) {
+            Log.d(TAG, "firm = " + mDeals.get(i).getName()+ " status = " + mDeals.get(i).getStatus());
+        }
+
+    }
+
+    public int getNewDealsCount(){
+        Set<String> newDeals = new HashSet<>();
+        for (int i = 0; i < mDeals.size(); i++) {
+            if (mDeals.get(i).getStatus().equals(Deal.DEAL_STATUS_NEW)){
+                newDeals.add(mDeals.get(i).getName());
+            }
+        }
+        return newDeals.size();
+    }
+
+    public int getNewDealsPriceVolume(){
+        int volume=0;
+        for (int i = 0; i < mDeals.size(); i++) {
+            if (mDeals.get(i).getStatus().equals(Deal.DEAL_STATUS_NEW)){
+                volume += mDeals.get(i).getPriceVolume();
+            }
+        }
+        return volume;
+    }
+
+    public int getNewDealsRealVolume(){
+        int volume=0;
+        for (int i = 0; i < mDeals.size(); i++) {
+            if (mDeals.get(i).getStatus().equals(Deal.DEAL_STATUS_NEW)){
+                volume += mDeals.get(i).getRealVolume();
+            }
+        }
+        return volume;
+    }
+
+
+
 }

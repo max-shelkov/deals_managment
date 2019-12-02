@@ -48,6 +48,7 @@ public class Deal implements Serializable, Comparable<Deal>{
     private Calendar mFinishMonth;  //16
     private int mDuration;    //17
     private Deal mProlongationDeal;
+    private boolean prolonged;
     private String mNote;
 
 
@@ -89,14 +90,13 @@ public class Deal implements Serializable, Comparable<Deal>{
         mStatus = DEAL_STATUS_NEW;
     }
 
-    public Deal(String owner, String name, String contractor, String status,
+    public Deal(String owner, String name, String contractor,
                 int priceVolume, int realVolume, Calendar startMonth, int duration) {
         mId = UUID.randomUUID();
         mOwner = owner;
         mName = name;
         mContractor = contractor;
         mType = DEAL_TYPE_SELL;
-        mStatus = status;
         mPriceVolume = priceVolume;
         mRealVolume = realVolume;
         mStartMonth = startMonth;
@@ -112,15 +112,8 @@ public class Deal implements Serializable, Comparable<Deal>{
         mFinishMonth.add(Calendar.MONTH, duration-1);
         mDiscount = 100 - 100*mRealVolume/mPriceVolume;
         mAmount = mRealVolume * duration;
+        mStatus = defineStatus();
 
-        if (mFinishMonth.get(Calendar.YEAR) == Calendar.getInstance().get(Calendar.YEAR)&&
-                mFinishMonth.get(Calendar.MONTH) == Calendar.getInstance().get(Calendar.MONTH)){
-            mStatus = DEAL_STATUS_PROLONGATION;
-        }
-        if (mFinishMonth.get(Calendar.YEAR) == Calendar.getInstance().get(Calendar.YEAR)&&
-                (mFinishMonth.get(Calendar.MONTH)-1) == Calendar.getInstance().get(Calendar.MONTH)){
-            mStatus = DEAL_STATUS_PREPROLONGATION;
-        }
     }
 
     public UUID getId() {
@@ -209,7 +202,8 @@ public class Deal implements Serializable, Comparable<Deal>{
     public void setDuration(short duration) {
         mDuration = duration;
         mFinishMonth = calculateFinishMonth(mStartMonth, mDuration);
-        if (mRealVolume>0) mAmount = mRealVolume * mDuration;
+        mAmount = mRealVolume * mDuration;
+        mStatus = defineStatus();
     }
 
     public Calendar getStartMonth() {
@@ -219,6 +213,8 @@ public class Deal implements Serializable, Comparable<Deal>{
     public void setStartMonth(Calendar startMonth) {
         mStartMonth = startMonth;
         mFinishMonth = calculateFinishMonth(mStartMonth, mDuration);
+        mAmount = mRealVolume * mDuration;
+        mStatus = defineStatus();
     }
 
     private Calendar calculateFinishMonth(Calendar startMonth, int duration){
@@ -300,8 +296,29 @@ public class Deal implements Serializable, Comparable<Deal>{
         mStatus = status;
     }
 
+    public void defineAndSetStatus(){
+        setStatus(defineStatus());
+    }
+
     @Override
     public int compareTo(Deal d) {
         return this.getName().compareTo(d.getName());
+    }
+
+    private String defineStatus(){
+        int monthsLeft = GeckoUtils.monthsBetween(Calendar.getInstance(), mFinishMonth);
+        switch (monthsLeft){
+            case 1:
+                return DEAL_STATUS_PROLONGATION;
+            case 2:
+                return DEAL_STATUS_PREPROLONGATION;
+            default:
+                if (monthsLeft<0) {
+                    return DEAL_STATUS_ARCHIVE;
+                } else {
+                    return DEAL_STATUS_CURRENT;
+                }
+        }
+
     }
 }

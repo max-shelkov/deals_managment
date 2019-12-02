@@ -2,6 +2,8 @@ package com.gecko.dealsmanagment.ui.deals;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -73,8 +75,9 @@ public class DealsFragment extends Fragment {
         mButtonSerialize.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "Serialize clicked");
-                mDealsViewModel.serializeDealsKeeper();
+//                Log.d(TAG, "Serialize clicked");
+//                mDealsViewModel.serializeDealsKeeper();
+                mDealsViewModel.logDealsStatuses();
             }
         });
 
@@ -176,6 +179,17 @@ public class DealsFragment extends Fragment {
             mToPay.setText("Rub: "+ formattedInt(mDeal.getToPay()));
             mPeriod.setMax(mDeal.getDuration());
             mPeriod.setProgress(monthsBetween(mDeal.getStartMonth(), Calendar.getInstance()));
+//            Log.d(TAG, "finish month = " + finish.get(Calendar.MONTH) + " start month = " +start.get(Calendar.MONTH));
+            int monthBetween = monthsBetween(mDeal.getStartMonth(), Calendar.getInstance());
+            String status = mDeal.getStatus();
+            Log.d(TAG, "name = " + mDeal.getName() + " status = " + mDeal.getStatus());
+            if(mDeal.getStatus().equals(Deal.DEAL_STATUS_PROLONGATION)){
+                mPeriod.setProgressTintList(ColorStateList.valueOf(getResources().getColor(R.color.color2GisYellowDark)));
+            } else if (mDeal.getStatus().equals(Deal.DEAL_STATUS_PREPROLONGATION)){
+                mPeriod.setProgressTintList(ColorStateList.valueOf(getResources().getColor(R.color.color2GisGreenDark)));
+            }else{
+                mPeriod.setProgressTintList(ColorStateList.valueOf(getResources().getColor(R.color.color2GisGreenMedium)));
+            }
         }
 
         @Override

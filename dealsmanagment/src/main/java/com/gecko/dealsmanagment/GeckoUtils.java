@@ -3,6 +3,7 @@ package com.gecko.dealsmanagment;
 import android.util.Log;
 
 import java.util.Calendar;
+import java.util.List;
 
 public class GeckoUtils {
 
@@ -108,10 +109,10 @@ public class GeckoUtils {
     }
 
     public static int monthsBetween(Calendar start, Calendar finish){
-        Calendar current = Calendar.getInstance();
+//        Calendar current = Calendar.getInstance();
         int months = 0;
-        Log.d(TAG, "finish month = " + finish.get(Calendar.MONTH) + " start month = " +start.get(Calendar.MONTH));
-        if (start.get(Calendar.YEAR) == finish.get(Calendar.YEAR)){
+//        Log.d(TAG, "finish month = " + finish.get(Calendar.MONTH) + " start month = " +start.get(Calendar.MONTH));
+        if (start.get(Calendar.YEAR) == finish.get(Calendar.YEAR)&&finish.get(Calendar.MONTH) >= start.get(Calendar.MONTH)){
             months = finish.get(Calendar.MONTH) - start.get(Calendar.MONTH) +1;
         }
 
@@ -122,7 +123,16 @@ public class GeckoUtils {
             Log.d(TAG, "p1 = " + p1 + " p2 = " + p2);
             months = p1+p2;
         }
+
+        if (start.get(Calendar.YEAR) > finish.get(Calendar.YEAR)){
+            months = -1;
+        }
+
+        if (start.get(Calendar.YEAR) == finish.get(Calendar.YEAR)&& finish.get(Calendar.MONTH) < start.get(Calendar.MONTH)){
+            months = -1;
+        }
         return months;
     }
+
 
 }
