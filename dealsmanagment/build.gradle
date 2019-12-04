@@ -1,6 +1,20 @@
+ext {
+    var = 'D:\\max\\Documents\\AppData\\AndroidStudioKeyStore\\AndroidKey.jks'
+    var1 = 'dEEvEl0per392'
+    var2 = 'key0'
+    var3 = 'dEEvEl0per739'
+}
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        signed {
+            storeFile file('D:\\max\\Documents\\AppData\\AndroidStudioKeyStore\\AndroidKey.jks')
+            storePassword 'dEEvEl0per392'
+            keyAlias = 'key0'
+            keyPassword 'dEEvEl0per739'
+        }
+    }
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
 
@@ -19,6 +33,8 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            debuggable = true
+            signingConfig signingConfigs.signed
         }
     }
 }

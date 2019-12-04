@@ -13,8 +13,14 @@ public class DashboardViewModel extends ViewModel {
     private MutableLiveData<Integer> mCurrentDealCount;
     private MutableLiveData<Integer> mCurrentPriceVolume;
     private MutableLiveData<Integer> mCurrentRealVolume;
+
+    private MutableLiveData<Integer> mProlongationDealsCount;
     private MutableLiveData<Integer> mProlongationPriceVolume;
     private MutableLiveData<Integer> mProlongationRealVolume;
+
+    private MutableLiveData<Integer> mProlongedDealsCount;
+    private MutableLiveData<Integer> mProlongedPriceVolume;
+    private MutableLiveData<Integer> mProlongedRealVolume;
 
     private MutableLiveData<Integer> mNextDealCount;
     private MutableLiveData<Integer> mNextPriceVolume;
@@ -31,15 +37,18 @@ public class DashboardViewModel extends ViewModel {
 
         mCurrentDealCount = new MutableLiveData<>();
         mCurrentDealCount.setValue(mDealsKeeper.getUniqueClientsCount());
-
         mCurrentPriceVolume = new MutableLiveData<>();
         mCurrentPriceVolume.setValue(mDealsKeeper.getCurrentVolumePrice());
         mCurrentRealVolume = new MutableLiveData<>();
         mCurrentRealVolume.setValue(mDealsKeeper.getCurrentVolumeReal());
-        mProlongationPriceVolume = new MutableLiveData<>();
-        mProlongationPriceVolume.setValue(mDealsKeeper.getProlongationVolumePrice());
-        mProlongationRealVolume = new MutableLiveData<>();
-        mProlongationRealVolume.setValue(mDealsKeeper.getProlongationVolumeReal());
+
+        mProlongationDealsCount = new MutableLiveData<>(mDealsKeeper.getProlongationDealsCount());
+        mProlongationPriceVolume = new MutableLiveData<>(mDealsKeeper.getProlongationVolumePrice());
+        mProlongationRealVolume = new MutableLiveData<>(mDealsKeeper.getProlongationVolumeReal());
+
+        mProlongedDealsCount = new MutableLiveData<>(mDealsKeeper.getProlongedDealsCount());
+        mProlongedPriceVolume = new MutableLiveData<>(mDealsKeeper.getPriceVolumeFromProlongations());
+        mProlongedRealVolume = new MutableLiveData<>(mDealsKeeper.getRealVolumeFromProlongations());
 
         mNextDealCount = new MutableLiveData<>();
         mNextDealCount.setValue(mDealsKeeper.getNextMonthUniqueClientsCount());
@@ -75,12 +84,28 @@ public class DashboardViewModel extends ViewModel {
         return mCurrentRealVolume;
     }
 
+    public MutableLiveData<Integer> getProlongationDealsCount(){
+        return mProlongationDealsCount;
+    }
+
     public MutableLiveData<Integer> getProlongationPriceVolume() {
         return mProlongationPriceVolume;
     }
 
     public MutableLiveData<Integer> getProlongationRealVolume() {
         return mProlongationRealVolume;
+    }
+
+    public MutableLiveData<Integer> getProlongedDealsCount() {
+        return mProlongedDealsCount;
+    }
+
+    public MutableLiveData<Integer> getProlongedPriceVolume() {
+        return mProlongedPriceVolume;
+    }
+
+    public MutableLiveData<Integer> getProlongedRealVolume() {
+        return mProlongedRealVolume;
     }
 
     public MutableLiveData<Integer> getNextDealCount() {

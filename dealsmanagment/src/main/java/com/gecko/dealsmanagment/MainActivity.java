@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
         MainActivity.sContext = getApplicationContext();
 
         verifyStoragePermissions(this);
+
     }
 
     public static Context getAppContext(){
@@ -80,6 +81,8 @@ public class MainActivity extends AppCompatActivity {
             Log.d(TAG, "permissions granted");
         }
     }
+
+
 
     @Override
     public void onBackPressed() {

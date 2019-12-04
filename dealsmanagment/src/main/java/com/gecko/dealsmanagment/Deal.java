@@ -15,6 +15,9 @@ public class Deal implements Serializable, Comparable<Deal>{
     public static final String DEAL_STATUS_PROLONGATION = "Продление";
     public static final String DEAL_STATUS_PREPROLONGATION = "ППС3";
     public static final String DEAL_STATUS_ARCHIVE = "Архив";
+    public static final String DEAL_STATUS_FUTURE = "Архив";
+
+
 
     public static final String[] DEAL_STATUSES =
             {DEAL_STATUS_NEW, DEAL_STATUS_CURRENT, DEAL_STATUS_BREAK,
@@ -48,7 +51,6 @@ public class Deal implements Serializable, Comparable<Deal>{
     private Calendar mFinishMonth;  //16
     private int mDuration;    //17
     private Deal mProlongationDeal;
-    private boolean prolonged;
     private String mNote;
 
 
@@ -203,7 +205,6 @@ public class Deal implements Serializable, Comparable<Deal>{
         mDuration = duration;
         mFinishMonth = calculateFinishMonth(mStartMonth, mDuration);
         mAmount = mRealVolume * mDuration;
-        mStatus = defineStatus();
     }
 
     public Calendar getStartMonth() {
@@ -214,7 +215,7 @@ public class Deal implements Serializable, Comparable<Deal>{
         mStartMonth = startMonth;
         mFinishMonth = calculateFinishMonth(mStartMonth, mDuration);
         mAmount = mRealVolume * mDuration;
-        mStatus = defineStatus();
+//        mStatus = defineStatus();
     }
 
     private Calendar calculateFinishMonth(Calendar startMonth, int duration){

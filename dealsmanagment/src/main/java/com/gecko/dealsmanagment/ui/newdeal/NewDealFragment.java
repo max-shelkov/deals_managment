@@ -434,12 +434,15 @@ public class NewDealFragment extends Fragment {
                     break;
                 case REQUEST_CODE_DEAL_STATUS:
                     String status = data.getStringExtra("data");
-                    mNewDealViewModel.setStatus(status);
-                    if (status.equals("Продление")) {
+//                    mNewDealViewModel.setStatus(status);
+                    if (status.equals(Deal.DEAL_STATUS_PROLONGATION)) {
+                        mNewDealViewModel.setStatus(Deal.DEAL_STATUS_NEW);
                         chooseProlongationDeal();
-                    } else if (status.equals("Допродажа")){
+                    } else if (status.equals(Deal.DEAL_STATUS_OVERSELL)){
+                        mNewDealViewModel.setStatus(Deal.DEAL_STATUS_OVERSELL);
                         chooseOversellDeal();
-                    } else if (status.equals("ППС3")){
+                    } else if (status.equals(Deal.DEAL_STATUS_PREPROLONGATION)){
+                        mNewDealViewModel.setStatus(Deal.DEAL_STATUS_FUTURE);
                         choosePps3Deal();
                     }
                     break;

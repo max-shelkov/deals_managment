@@ -1,10 +1,14 @@
 package com.gecko.dealsmanagment.ui.newdeal;
 
+import android.util.Log;
+
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.gecko.dealsmanagment.Deal;
 import com.gecko.dealsmanagment.DealsKeeper;
+import com.gecko.dealsmanagment.GeckoUtils;
+import com.gecko.dealsmanagment.MainActivity;
 
 import java.util.Calendar;
 
@@ -17,9 +21,8 @@ public class NewDealViewModel extends ViewModel {
     public NewDealViewModel() {
 
         mDealsKeeper = new DealsKeeper();
+        mNewDeal = new MutableLiveData<>(new Deal());
 
-        mNewDeal = new MutableLiveData<>();
-        mNewDeal.setValue(new Deal());
 
     }
 
@@ -55,6 +58,7 @@ public class NewDealViewModel extends ViewModel {
 
     public void addNewDealToKeeper(){
 
+        Log.d(GeckoUtils.TAG, "status of a new deal = " + mNewDeal.getValue().getStatus());
         mDealsKeeper.addDeal(mNewDeal.getValue());
         mDealsKeeper.sortDeals();
         mDealsKeeper.serializeDeals();
@@ -121,6 +125,10 @@ public class NewDealViewModel extends ViewModel {
     public void setStatus(String status){
         mNewDeal.getValue().setStatus(status);
         mNewDeal.setValue(mNewDeal.getValue());
+    }
+
+    public String getStatus(){
+        return mNewDeal.getValue().getStatus();
     }
 
     public void setProlongationDeal(Deal d){

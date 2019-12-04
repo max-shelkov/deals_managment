@@ -43,9 +43,10 @@ public class DealsKeeper{
 
 
     private List<Deal> mDeals;
+    private Calendar currentMonth;
 
     public DealsKeeper() {
-        Log.d(TAG, "DealsKeeper constructor");
+        currentMonth = Calendar.getInstance();
         mDeals = new ArrayList<>();
         deserializeDeals();
     }
@@ -356,24 +357,6 @@ public class DealsKeeper{
         return clients.size();
     }
 
-/*    private String defineStatus(String status){
-        if (status.equals("Продажи")){
-            return Deal.DEAL_STATUS_CURRENT;
-        } else if (status.equals("Расторжение")){
-            return Deal.DEAL_STATUS_BREAK;
-        } else if (status.equals("Новый")){
-            return Deal.DEAL_STATUS_NEW;
-        } else if (status.equals("Допродажа")){
-            return Deal.DEAL_STATUS_OVERSELL;
-        }else if (status.equals("Продление")){
-            return Deal.DEAL_STATUS_PROLONGATION;
-        } else if (status.equals("Регионалка")){
-            return Deal.DEAL_STATUS_CURRENT;
-        } else {
-            return "";
-        }
-    }*/
-
     private String defineType(String type){
         if (type.equals("Продажи")
                 ||type.equals("Расторжение")
@@ -445,7 +428,7 @@ public class DealsKeeper{
     public int getNewDealsCount(){
         Set<String> newDeals = new HashSet<>();
         for (int i = 0; i < mDeals.size(); i++) {
-            if (mDeals.get(i).getStatus().equals(Deal.DEAL_STATUS_NEW)){
+            if (mDeals.get(i).getStatus().equals(Deal.DEAL_STATUS_NEW)&&mDeals.get(i).getProlongationDeal()==null){
                 newDeals.add(mDeals.get(i).getName());
             }
         }
@@ -455,7 +438,7 @@ public class DealsKeeper{
     public int getNewDealsPriceVolume(){
         int volume=0;
         for (int i = 0; i < mDeals.size(); i++) {
-            if (mDeals.get(i).getStatus().equals(Deal.DEAL_STATUS_NEW)){
+            if (mDeals.get(i).getStatus().equals(Deal.DEAL_STATUS_NEW)&&mDeals.get(i).getProlongationDeal()==null){
                 volume += mDeals.get(i).getPriceVolume();
             }
         }
@@ -465,13 +448,52 @@ public class DealsKeeper{
     public int getNewDealsRealVolume(){
         int volume=0;
         for (int i = 0; i < mDeals.size(); i++) {
-            if (mDeals.get(i).getStatus().equals(Deal.DEAL_STATUS_NEW)){
+            if (mDeals.get(i).getStatus().equals(Deal.DEAL_STATUS_NEW)&&mDeals.get(i).getProlongationDeal()==null){
                 volume += mDeals.get(i).getRealVolume();
             }
         }
         return volume;
     }
 
+    public int getProlongationDealsCount(){
+        int count = 0;
+        for (int i = 0; i < mDeals.size(); i++) {
+            if (mDeals.get(i).getStatus().equals(Deal.DEAL_STATUS_PROLONGATION)){
+                count++;
+            }
+        }
+        return count;
+    }
 
+    public int getProlongedDealsCount(){
+        int count = 0;
+        for (int i = 0; i < mDeals.size(); i++) {
+            if (mDeals.get(i).getStatus().equals(Deal.DEAL_STATUS_NEW)&&mDeals.get(i).getProlongationDeal()!=null){
+                if (mDeals.get(i).getProlongationDeal()!=null){
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
+
+    public int getPriceVolumeFromProlongations(){
+        int volume = 0;
+        for (int i = 0; i < mDeals.size(); i++) {
+            if (mDeals.get(i).getStatus().equals(Deal.DEAL_STATUS_NEW)&&mDeals.get(i).getProlongationDeal()!=null){
+                volume += mDeals.get(i).getPriceVolume();            }
+        }
+        return volume;
+    }
+    public int getRealVolumeFromProlongations(){
+        int volume = 0;
+        for (int i = 0; i < mDeals.size(); i++) {
+            if (mDeals.get(i).getStatus().equals(Deal.DEAL_STATUS_NEW)&&mDeals.get(i).getProlongationDeal()!=null){
+                volume += mDeals.get(i).getRealVolume();
+            }
+        }
+        return volume;
+    }
 
 }

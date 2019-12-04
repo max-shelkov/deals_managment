@@ -19,8 +19,12 @@ public class DashboardFragment extends Fragment {
     private TextView mCurrentUniqueClientsCountTextView;
     private TextView mCurrentVolumePriceTextView;
     private TextView mCurrentVolumeRealTextView;
+    private TextView mProlongationDealsCountTextView;
     private TextView mProlongationVolumePriceTextView;
     private TextView mProlongationVolumeRealTextView;
+    private TextView mProlongedDealsCountTextView;
+    private TextView mProlongedPriceVolumeTextView;
+    private TextView mProlongedRealVolumeTextView;
     private TextView mNextUniqueClientsCountTextView;
     private TextView mNextVolumePriceTextView;
     private TextView mNextVolumeRealTextView;
@@ -38,28 +42,25 @@ public class DashboardFragment extends Fragment {
                 ViewModelProviders.of(this).get(DashboardViewModel.class);
         View root = inflater.inflate(R.layout.fragment_dashboard, container, false);
 
-
+        mCurrentUniqueClientsCountTextView = root.findViewById(R.id.unique_clients_count_text_view);
         mCurrentVolumePriceTextView = root.findViewById(R.id.current_price_volume_text_view);
         mCurrentVolumeRealTextView = root.findViewById(R.id.current_real_volume_text_view);
+
+        mProlongationDealsCountTextView = root.findViewById(R.id.prolongation_deals_count_text_view);
         mProlongationVolumePriceTextView = root.findViewById(R.id.prolongation_price_volume_text_view);
         mProlongationVolumeRealTextView = root.findViewById(R.id.prolongation_real_volume_text_view);
-        mCurrentUniqueClientsCountTextView = root.findViewById(R.id.unique_clients_count_text_view);
+
+        mProlongedDealsCountTextView = root.findViewById(R.id.prolonged_deals_count_text_view);
+        mProlongedPriceVolumeTextView = root.findViewById(R.id.prolonged_price_volume_text_view);
+        mProlongedRealVolumeTextView = root.findViewById(R.id.prolonged_real_volume_text_view);
+
         mNextUniqueClientsCountTextView = root.findViewById(R.id.unique_clients_next_month_text_view);
         mNextVolumePriceTextView = root.findViewById(R.id.next_month_price_volume_text_view);
         mNextVolumeRealTextView = root.findViewById(R.id.next_month_real_volume_text_view);
+
         mNewDealsCountTextView = root.findViewById(R.id.new_deals_next_month_text_view);
         mNewDealsVolumePriceTextView = root.findViewById(R.id.new_deals_price_volume_text_view);
         mNewDealsVolumeRealTextView = root.findViewById(R.id.new_deals_real_volume_text_view);
-
-
-        return root;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-//        dashboardViewModel.reloadDealsKeeper();
 
         dashboardViewModel.getCurrentDealCount().observe(this, new Observer<Integer>() {
             @Override
@@ -82,6 +83,13 @@ public class DashboardFragment extends Fragment {
             }
         });
 
+        dashboardViewModel.getProlongationDealsCount().observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+                mProlongationDealsCountTextView.setText(""+integer);
+            }
+        });
+
         dashboardViewModel.getProlongationPriceVolume().observe(this, new Observer<Integer>() {
             @Override
             public void onChanged(Integer integer) {
@@ -93,6 +101,27 @@ public class DashboardFragment extends Fragment {
             @Override
             public void onChanged(Integer integer) {
                 mProlongationVolumeRealTextView.setText("Vr: "+GeckoUtils.formattedInt(integer));
+            }
+        });
+
+        dashboardViewModel.getProlongedDealsCount().observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+                mProlongedDealsCountTextView.setText(""+integer);
+            }
+        });
+
+        dashboardViewModel.getProlongedPriceVolume().observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+                mProlongedPriceVolumeTextView.setText(GeckoUtils.formattedInt(integer));
+            }
+        });
+
+        dashboardViewModel.getProlongedRealVolume().observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+                mProlongedRealVolumeTextView.setText(GeckoUtils.formattedInt(integer));
             }
         });
 
@@ -138,5 +167,8 @@ public class DashboardFragment extends Fragment {
             }
         });
 
+
+        return root;
     }
+
 }
