@@ -109,7 +109,7 @@ public class DealsKeeper{
                 Log.d(TAG, "assets found");
             }
             assert am != null;
-            Workbook wb = new HSSFWorkbook(am.open("201911.xls"));
+            Workbook wb = new HSSFWorkbook(am.open("201912.xls"));
 //            Workbook wb = WorkbookFactory.create(am.open(fileName));
             Sheet sheet = wb.getSheet("текущие");
             Log.d(TAG, "after got sheet");
